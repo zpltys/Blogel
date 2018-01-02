@@ -512,6 +512,7 @@ public:
     {
         //ResetTimer(4);//DEBUG !!!!!!!!!!
         //set send buffer
+        std::cout << "num workers:" << _num_workers << std::endl;
         vector<vector<STRVertex*> > _loaded_parts(_num_workers);
         for (int i = 0; i < _my_part.size(); i++) {
             STRVertex* v = _my_part[i];
