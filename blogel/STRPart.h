@@ -100,7 +100,9 @@ public:
         std::cout << "start load graph" << std::endl;
         hdfsFS fs = getHdfsFS();
         hdfsFile in = getRHandle(inpath, fs);
+        std::cout << "start ok" << std::endl;
         LineReader reader(fs, in);
+        std::cout << "initial ok" << std::endl;
         while (true) {
             reader.readLine();
             cout << "line:" << reader.getLine() << endl;
