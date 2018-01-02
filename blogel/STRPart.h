@@ -568,8 +568,10 @@ public:
             std::cout << "zs-log: split ok!" << std::endl;
             //reading assigned splits (map)
             for (vector<string>::iterator it = assignedSplits.begin();
-                 it != assignedSplits.end(); it++)
+                 it != assignedSplits.end(); it++) {
+                std::cout << "path: " << *it << std::endl;
                 load_graph(it->c_str());
+            }
             std::cout << "zs-log: now we have the question" << std::endl;
             delete arrangement;
         } else {
