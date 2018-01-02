@@ -568,9 +568,10 @@ public:
             for (vector<string>::iterator it = assignedSplits.begin();
                  it != assignedSplits.end(); it++)
                 load_graph(it->c_str());
+            std::cout << "zs-log: now we have the question" << std::endl;
             delete arrangement;
         } else {
-            vector<string> assignedSplits;
+            vector <string> assignedSplits;
             slaveScatter(assignedSplits);
             //reading assigned splits (map)
             for (vector<string>::iterator it = assignedSplits.begin();
