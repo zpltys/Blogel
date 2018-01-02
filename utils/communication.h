@@ -8,6 +8,8 @@
 #include "serialization.h"
 #include "global.h"
 
+using namespace std;
+
 //============================================
 //Allreduce
 int all_sum(int my_copy)
@@ -106,6 +108,7 @@ void all_to_all(std::vector<T>& to_exchange)
     //        save received data in *to_exchange[i]
     int np = get_num_workers();
     int me = get_worker_id();
+    cout << "np:" << np << "  me:" << me << endl;
     for (int i = 0; i < np; i++) {
         int partner = (i - me + np) % np;
         if (me != partner) {

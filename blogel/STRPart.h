@@ -518,11 +518,10 @@ public:
             STRVertex* v = _my_part[i];
             _loaded_parts[hash(v->id)].push_back(v);
         }
-        std::cout << "before all to all" << std::endl;
         //exchange vertices to add
         all_to_all(_loaded_parts);
 
-        std::cout << "all to all" << std::endl;
+        std::cout << "all to all end" << std::endl;
 
         //delete sent vertices
         for (int i = 0; i < _my_part.size(); i++) {
@@ -554,8 +553,6 @@ public:
         }
         init_timers();
 
-        std::cout << "ahh" << std::endl;
-
         //dispatch splits
         ResetTimer(WORKER_TIMER);
         vector<vector<string> >* arrangement;
@@ -577,11 +574,8 @@ public:
                  it != assignedSplits.end(); it++)
                 load_graph(it->c_str());
         }
-        std::cout << "it's you" << std::endl;
         //send vertices according to hash_id (reduce)
         sync_graph();
-
-        std::cout << "go go go" << std::endl;
 
         //barrier for data loading
         worker_barrier();
