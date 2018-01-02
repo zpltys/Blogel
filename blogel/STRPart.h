@@ -563,7 +563,9 @@ public:
             std::cout << "zs-log: we run here" << std::endl;
             //reportAssignment(arrangement);//DEBUG !!!!!!!!!!
             masterScatter(*arrangement);
+            std::cout << "zs-log: Scatter ok!" << std::endl;
             vector<string>& assignedSplits = (*arrangement)[0];
+            std::cout << "zs-log: split ok!" << std::endl;
             //reading assigned splits (map)
             for (vector<string>::iterator it = assignedSplits.begin();
                  it != assignedSplits.end(); it++)
