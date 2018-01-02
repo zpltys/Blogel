@@ -550,6 +550,8 @@ public:
         }
         init_timers();
 
+        std::cout << "ahh" << std::endl;
+
         //dispatch splits
         ResetTimer(WORKER_TIMER);
         vector<vector<string> >* arrangement;
