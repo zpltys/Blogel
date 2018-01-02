@@ -112,6 +112,7 @@ void all_to_all(std::vector<T>& to_exchange)
     cout << "np:" << np << "  me:" << me << endl;
     for (int i = 0; i < np; i++) {
         int partner = (i - me + np) % np;
+        cout << "me:" << me << "  partner:" << partner << endl;
         if (me != partner) {
             if (me < partner) {
                 StartTimer(SERIALIZATION_TIMER);
