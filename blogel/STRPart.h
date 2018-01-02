@@ -582,6 +582,8 @@ public:
 
         //=========================================================
 
+        std::cout << "run middle" << std::endl;
+
         init_timers();
         ResetTimer(WORKER_TIMER);
 
@@ -626,6 +628,7 @@ public:
             cout << "SYNC done in " << get_timer(4) << " seconds" << endl;
 
         //=========================================================
+        std::cout << "fuck" << std::endl;
 
         worker_barrier();
         StopTimer(WORKER_TIMER);
