@@ -546,7 +546,7 @@ public:
     // run the worker
     void run(const WorkerParams& params)
     {
-        std::cout << "start run, me:" << get_worker_id() << std::endl;
+        std::cout << "start run, me:" << _my_rank << std::endl;
         //check path + init
         if (_my_rank == MASTER_RANK) {
             if (dirCheck(params.input_path.c_str(), params.output_path.c_str(), _my_rank == MASTER_RANK, params.force_write) == -1)
