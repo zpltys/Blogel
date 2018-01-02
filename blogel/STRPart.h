@@ -560,6 +560,7 @@ public:
         vector<vector<string> >* arrangement;
         if (_my_rank == MASTER_RANK) {
             arrangement = params.native_dispatcher ? dispatchLocality(params.input_path.c_str()) : dispatchRan(params.input_path.c_str());
+            std::cout << "zs-log: we run here" << std::endl;
             //reportAssignment(arrangement);//DEBUG !!!!!!!!!!
             masterScatter(*arrangement);
             vector<string>& assignedSplits = (*arrangement)[0];
