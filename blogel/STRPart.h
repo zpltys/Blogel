@@ -518,6 +518,7 @@ public:
             STRVertex* v = _my_part[i];
             _loaded_parts[hash(v->id)].push_back(v);
         }
+        std::cout << "before all to all" << std::endl;
         //exchange vertices to add
         all_to_all(_loaded_parts);
 
