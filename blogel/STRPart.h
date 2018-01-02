@@ -97,11 +97,13 @@ public:
 
     void load_graph(const char* inpath)
     {
+        std::cout << "start load graph" << std::endl;
         hdfsFS fs = getHdfsFS();
         hdfsFile in = getRHandle(inpath, fs);
         LineReader reader(fs, in);
         while (true) {
             reader.readLine();
+            cout << "line:" << reader.getLine() << endl;
             if (!reader.eof())
                 load_vertex(toVertex(reader.getLine()));
             else
