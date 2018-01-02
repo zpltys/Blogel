@@ -542,7 +542,6 @@ public:
     // run the worker
     void run(const WorkerParams& params)
     {
-        std::cout << "start run" << std::endl;
         //check path + init
         if (_my_rank == MASTER_RANK) {
             if (dirCheck(params.input_path.c_str(), params.output_path.c_str(), _my_rank == MASTER_RANK, params.force_write) == -1)
@@ -576,6 +575,8 @@ public:
 
         //send vertices according to hash_id (reduce)
         sync_graph();
+
+        std::cout << "go go go" << std::endl;
 
         //barrier for data loading
         worker_barrier();
