@@ -575,6 +575,7 @@ public:
                 load_graph(it->c_str());
         }
         //send vertices according to hash_id (reduce)
+        std::cout << "start sync_graph, me:" << get_worker_id() << std::endl;
         sync_graph();
 
         //barrier for data loading
