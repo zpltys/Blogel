@@ -42,6 +42,7 @@ public:
 
     virtual void toline(STRVertex* v, BufferedWriter& writer) //key: "vertexID blockID workerD"
     { //val: list of "vid bid wid"
+        cout << "start write" << endl;
         sprintf(buf, "%d %d %d\t", v->id, v->bid, _my_rank);
         writer.write(buf);
 
@@ -81,7 +82,6 @@ void blogel_sssp_STRRnd1(string in_path, string out_path)
     param.output_path = out_path;
     param.force_write = true;
     param.native_dispatcher = false;
-    cout << "initial worker" << endl;
     STRRnd1 worker(xnum, ynum, sampleRate);
     cout << "worker initial" << endl;
     worker.run(param);
