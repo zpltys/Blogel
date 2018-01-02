@@ -1,12 +1,8 @@
-#include "blogel_sssp_STRRnd1.h"
-#include "blogel_sssp_STRRnd2.h"
-#include <iostream>
+#include "pregel_app_hashmin.h"
 
-int main(int argc, char* argv[])
-{
-    init_workers();
-    blogel_sssp_STRRnd1("/pullgel/test", "/str1/usaxy_1");
-    blogel_sssp_STRRnd2("/str1/usaxy_1", "/str1/usaxy_2");
-    worker_finalize();
-    return 0;
+int main(int argc, char* argv[]){
+	init_workers();
+	pregel_hashmin("/toyFolder", "/toyOutput", true);
+	worker_finalize();
+	return 0;
 }
