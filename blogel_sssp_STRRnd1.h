@@ -26,12 +26,16 @@ public:
         v->content = line; //first set content!!! line will change later due to "strtok"
         pch = strtok(line, " ");
         v->id = atoi(pch);
+        cout << "zs-log: id: " << v->id << endl;
         pch = strtok(NULL, " ");
         v->x = atof(pch);
+        cout << "zs-log: x: " << v->x << endl;
         pch = strtok(NULL, "\t");
         v->y = atof(pch);
+        cout << "zs-log: y: " << v->y << endl;
         pch = strtok(NULL, " ");
         int num = atoi(pch);
+        cout << "zs-log: num " << num << endl;
         while (num --) {
             pch = strtok(NULL, " ");
             int nb = atoi(pch);
