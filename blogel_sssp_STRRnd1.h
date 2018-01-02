@@ -20,6 +20,7 @@ public:
     //C version
     virtual STRVertex* toVertex(char* line)
     {
+        cout << "to Vertex line:" << line << endl;
         char* pch;
         STRVertex* v = new STRVertex;
         v->content = line; //first set content!!! line will change later due to "strtok"
