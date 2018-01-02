@@ -554,6 +554,7 @@ public:
         }
         init_timers();
 
+        std::cout << "master_rank:" << MASTER_RANK << std::endl;
         //dispatch splits
         ResetTimer(WORKER_TIMER);
         vector<vector<string> >* arrangement;
