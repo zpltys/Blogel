@@ -154,7 +154,9 @@ void all_to_all(std::vector<T>& to_exchange)
             }
         }
     }
+    cout << "ahh" << endl;
     StopTimer(COMMUNICATION_TIMER);
+    cout << "mmp" << endl;
 }
 
 template <class T, class T1>
