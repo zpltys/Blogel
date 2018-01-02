@@ -572,7 +572,7 @@ public:
                  it != assignedSplits.end(); it++)
                 load_graph(it->c_str());
         }
-
+        std::cout << "it's you" << std::endl;
         //send vertices according to hash_id (reduce)
         sync_graph();
 
