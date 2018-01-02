@@ -571,6 +571,7 @@ public:
                  it != assignedSplits.end(); it++) {
                 std::cout << "path: " << *it << std::endl;
                 load_graph(it->c_str());
+                std::cout << "zs-log: load ok!" << std::endl;
             }
             std::cout << "zs-log: now we have the question" << std::endl;
             delete arrangement;
