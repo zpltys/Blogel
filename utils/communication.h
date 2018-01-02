@@ -7,6 +7,7 @@
 #include "time.h"
 #include "serialization.h"
 #include "global.h"
+#include <iostream>
 
 using namespace std;
 
