@@ -520,6 +520,9 @@ public:
         }
         //exchange vertices to add
         all_to_all(_loaded_parts);
+
+        std::cout << "all to all" << std::endl;
+
         //delete sent vertices
         for (int i = 0; i < _my_part.size(); i++) {
             STRVertex* v = _my_part[i];
