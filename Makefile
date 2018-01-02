@@ -7,7 +7,7 @@ LDFLAGS = -lhdfs -Wno-deprecated -O2
 all: run
 
 run: run.cpp
-	$(CCOMPILE) mmp.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o run
+	$(CCOMPILE) run.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o run
 
 clean:
 	-rm run
