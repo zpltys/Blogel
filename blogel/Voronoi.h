@@ -166,7 +166,7 @@ public:
 
     void sync_graph()
     {
-        std::cout << "num workers:" << _num_workers << std::endl;
+        std::cout << "num workers:" << _num_workers << " my id:" << _my_rank << std::endl;
         //ResetTimer(4);//DEBUG !!!!!!!!!!
         //set send buffer
         vector<vector<BPartVertex*> > _loaded_parts(_num_workers);
