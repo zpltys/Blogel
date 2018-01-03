@@ -587,11 +587,9 @@ public:
 
         //=========================================================
 
-        std::cout << "run middle" << std::endl;
-
         init_timers();
         ResetTimer(WORKER_TIMER);
-
+        std::cout << "run middle id:" << _my_rank << std::endl;
         //----------- main logic -----------
         vector<double> xsplit;
         vector<vector<double> > ysplits(xnum);

@@ -109,41 +109,34 @@ void all_to_all(std::vector<T>& to_exchange)
     //        save received data in *to_exchange[i]
     int np = get_num_workers();
     int me = get_worker_id();
-    cout << "np:" << np << "  me:" << me << endl;
     for (int i = 0; i < np; i++) {
         int partner = (i - me + np) % np;
-        //cout << "me:" << me << "  partner:" << partner << endl;
         if (me != partner) {
             if (me < partner) {
                 StartTimer(SERIALIZATION_TIMER);
                 //send
-                //cout << "small start send  me:" << me << " partner:" << partner << endl;
                 ibinstream m;
                 m << to_exchange[partner];
                 StopTimer(SERIALIZATION_TIMER);
                 StartTimer(TRANSFER_TIMER);
                 send_ibinstream(m, partner);
                 StopTimer(TRANSFER_TIMER);
-                //cout << "small start receive me:"<< me << " partner:" << partner << endl;
                 //receive
                 StartTimer(TRANSFER_TIMER);
                 obinstream um = recv_obinstream(partner);
                 StopTimer(TRANSFER_TIMER);
                 StartTimer(SERIALIZATION_TIMER);
                 um >> to_exchange[partner];
-                //cout << "small end receive me:"<< me << " partner:" << partner << endl;
                 StopTimer(SERIALIZATION_TIMER);
             } else {
                 StartTimer(TRANSFER_TIMER);
                 //receive
-                //cout << "bigger start receive me:" << me << " partner:" << partner << endl;
                 obinstream um = recv_obinstream(partner);
                 StopTimer(TRANSFER_TIMER);
                 StartTimer(SERIALIZATION_TIMER);
                 T received;
                 um >> received;
                 //send
-                //cout << "bigger start send me:" << me << " partner:" << partner << endl;
                 ibinstream m;
                 m << to_exchange[partner];
                 StopTimer(SERIALIZATION_TIMER);
@@ -151,13 +144,10 @@ void all_to_all(std::vector<T>& to_exchange)
                 send_ibinstream(m, partner);
                 StopTimer(TRANSFER_TIMER);
                 to_exchange[partner] = received;
-                //cout << "bigger end send me:" << me << " partner:" << partner << endl;
             }
         }
     }
-    cout << "ahh" << endl;
     StopTimer(COMMUNICATION_TIMER);
-    cout << "mmp" << endl;
 }
 
 template <class T, class T1>
