@@ -11,7 +11,6 @@ public:
 
     virtual BPartVertex* toVertex(char* line)
     {
-        cout << "line:" << line << endl;
         char* pch;
         BPartVertex* v = new BPartVertex;
         v->value().content = line; //first set content!!! line will change later due to "strtok"
@@ -28,7 +27,6 @@ public:
             v->value().neighbors.push_back(nb);
             strtok(NULL, " "); //edge length
         }
-        cout << "end decode" << endl;
         return v;
     }
 
