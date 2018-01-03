@@ -30,7 +30,7 @@ public:
         pch = strtok(NULL, " ");
         v->x = atof(pch);
         cout << "zs-log: x: " << v->x << endl;
-        pch = strtok(NULL, "\t");
+        pch = strtok(NULL, ",");
         v->y = atof(pch);
         cout << "zs-log: y: " << v->y << endl;
         pch = strtok(NULL, " ");
