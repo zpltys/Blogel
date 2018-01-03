@@ -11,7 +11,7 @@
 
 using namespace std;
 
-int src = 0;
+int src = 1;
 
 struct SPEdge
 {
@@ -97,6 +97,7 @@ class SPVertex : public BVertex<VertexID, SPValue, SPMsg>
 public:
     virtual void compute(MessageContainer& messages)
     {
+        //cout << "compute " << step_num() << " time, my id is " << _my_rank << endl;
         if (step_num() == 1)
         {
             if (id == src)
