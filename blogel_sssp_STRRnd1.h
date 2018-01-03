@@ -20,7 +20,6 @@ public:
     //C version
     virtual STRVertex* toVertex(char* line)
     {
-        cout << "to Vertex line:" << line << endl;
         char* pch;
         STRVertex* v = new STRVertex;
         v->content = line; //first set content!!! line will change later due to "strtok"
@@ -88,7 +87,6 @@ void blogel_sssp_STRRnd1(string in_path, string out_path)
     param.force_write = true;
     param.native_dispatcher = false;
     STRRnd1 worker(xnum, ynum, sampleRate);
-    cout << "worker initial" << endl;
     worker.run(param);
     cout << "haha" << endl;
 }

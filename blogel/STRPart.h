@@ -525,8 +525,6 @@ public:
         //exchange vertices to add
         all_to_all(_loaded_parts);
 
-        std::cout << "all to all end" << std::endl;
-
         //delete sent vertices
         for (int i = 0; i < _my_part.size(); i++) {
             STRVertex* v = _my_part[i];
@@ -550,7 +548,6 @@ public:
     // run the worker
     void run(const WorkerParams& params)
     {
-        std::cout << "start run, me:" << _my_rank << std::endl;
         //check path + init
         if (_my_rank == MASTER_RANK) {
             if (dirCheck(params.input_path.c_str(), params.output_path.c_str(), _my_rank == MASTER_RANK, params.force_write) == -1)
@@ -558,26 +555,19 @@ public:
         }
         init_timers();
 
-        std::cout << "master_rank:" << MASTER_RANK << std::endl;
         //dispatch splits
         ResetTimer(WORKER_TIMER);
         vector<vector<string> >* arrangement;
         if (_my_rank == MASTER_RANK) {
             arrangement = params.native_dispatcher ? dispatchLocality(params.input_path.c_str()) : dispatchRan(params.input_path.c_str());
-            std::cout << "zs-log: we run here" << std::endl;
             //reportAssignment(arrangement);//DEBUG !!!!!!!!!!
             masterScatter(*arrangement);
-            std::cout << "zs-log: Scatter ok!" << std::endl;
             vector<string>& assignedSplits = (*arrangement)[0];
-            std::cout << "zs-log: split ok!" << std::endl;
             //reading assigned splits (map)
             for (vector<string>::iterator it = assignedSplits.begin();
                  it != assignedSplits.end(); it++) {
-                std::cout << "path: " << *it << std::endl;
                 load_graph(it->c_str());
-                std::cout << "zs-log: load ok!" << std::endl;
             }
-            std::cout << "zs-log: now we have the question" << std::endl;
             delete arrangement;
         } else {
             vector <string> assignedSplits;
@@ -588,7 +578,6 @@ public:
                 load_graph(it->c_str());
         }
         //send vertices according to hash_id (reduce)
-        std::cout << "start sync_graph, me:" << get_worker_id() << std::endl;
         sync_graph();
 
         //barrier for data loading
@@ -620,6 +609,7 @@ public:
                 cout << "]" << endl;
             }
         }
+        std::cout << "I'm here, my id is:" << _my_rank << endl;
         //%%% for print only %%% }
         setBlkID(xsplit, ysplits);
         //////
