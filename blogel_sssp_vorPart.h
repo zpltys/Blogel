@@ -17,7 +17,7 @@ public:
         pch = strtok(line, " ");
         v->id = atoi(pch);
         pch = strtok(NULL, " "); //filter x
-        pch = strtok(NULL, ","); //filter y
+        pch = strtok(NULL, "\t"); //filter y
         pch = strtok(NULL, " ");
         int num = atoi(pch);
 
