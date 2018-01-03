@@ -6,8 +6,8 @@ LDFLAGS = -lhdfs -Wno-deprecated -O2
 
 all: run
 
-run: put.cpp
-	$(CCOMPILE) put.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o run
+run: run_vorPart.cpp
+	$(CCOMPILE) run_vorPart.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o run
 
 clean:
 	-rm run
