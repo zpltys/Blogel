@@ -22,8 +22,6 @@ add_executable(Blogel
         blogel/STRPartR2.h
         blogel/VMessageBuffer.h
         blogel/Voronoi.h
-        hashmin/pregel_app_hashmin.h
-        hashmin/run.cpp
         utils/Aggregator.h
         utils/Combiner.h
         utils/communication.h
@@ -34,4 +32,9 @@ add_executable(Blogel
         utils/time.h
         utils/type.h
         utils/vecs.h
-        utils/ydhdfs.h)
+        utils/ydhdfs.h
+        run.cpp
+        blogel_app_sssp.h
+        blogel_sssp_vorPart.h
+        run_vorPart.cpp
+        put.cpp)
