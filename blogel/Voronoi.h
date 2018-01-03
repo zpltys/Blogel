@@ -665,7 +665,6 @@ public:
     // run the worker
     void run(const WorkerParams& params, bool toUG)
     {
-        cout << "start run" << endl;
         //check path + init
         if (_my_rank == MASTER_RANK) {
             if (dirCheck(params.input_path.c_str(), params.output_path.c_str(), _my_rank == MASTER_RANK, params.force_write) == -1)
@@ -694,10 +693,10 @@ public:
                  it != assignedSplits.end(); it++)
                 load_graph(it->c_str());
         }
-        cout << "???" << endl;
         //send vertices according to hash_id (reduce)
         sync_graph();
 
+        cout << "endl sync" << endl;
         //barrier for data loading
         worker_barrier();
         StopTimer(WORKER_TIMER);
@@ -710,6 +709,7 @@ public:
         //toundirected
         if (toUG)
             to_undirected();
+        cout << "vornoi begin" << endl;
 
         if (_my_rank == MASTER_RANK)
             cout << "-------------------------- Voronoi Partitioning BEGIN --------------------------" << endl;
