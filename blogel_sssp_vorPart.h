@@ -8,14 +8,15 @@ class vorPart : public BPartWorker {
     char buf[1000];
 
 public:
-    // id nodeType num v1 v2 ... vn
+
     virtual BPartVertex* toVertex(char* line)
     {
         char* pch;
         BPartVertex* v = new BPartVertex;
+        v->value().content = line; //first set content!!! line will change later due to "strtok"
         pch = strtok(line, " ");
         v->id = atoi(pch);
-        pch = strtok(NULL, " ");
+        pch = strtok(NULL, " "); //filter x
         v->value().nodeType = atoi(pch);
         pch = strtok(NULL, " ");
         int num = atoi(pch);
@@ -30,7 +31,7 @@ public:
 
     virtual void toline(BPartVertex* v, BufferedWriter& writer) //key: "vertexID blockID slaveID"
     { //val: list of "vid block slave "
-        sprintf(buf, "%d %d %d\t", v->id, v->value().color, _my_rank);
+        sprintf(buf, "%d %d %d %d\t", v->id, v->value().color, _my_rank, v->value().nodeType);
         writer.write(buf);
 
         vector<triplet>& vec = v->value().nbsInfo;
@@ -38,10 +39,16 @@ public:
         for (int i = 0; i < vec.size(); i++) {
             map[vec[i].vid] = vec[i];
         }
-
+        ////////
+        stringstream ss(v->value().content);
+        string token;
+        ss >> token; //vid
+        ss >> token; //x
+        ss >> token; //number
         int num = v->value().neighbors.size();
         for (int i = 0; i < num; i++) {
-            int vid = v->value().neighbors[i];
+            ss >> token;
+            int vid = atoi(token.c_str());
             triplet trip = map[vid];
             sprintf(buf, "%d %d %d ", vid, trip.bid, trip.wid);
             writer.write(buf);
