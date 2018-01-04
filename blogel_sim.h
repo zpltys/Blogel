@@ -1,3 +1,9 @@
+//
+// Created by zpltys on 2018/1/4.
+//
+#ifndef BLOGEL_BLOGEL_SIM_H
+#define BLOGEL_BLOGEL_SIM_H
+
 #include "utils/Combiner.h"
 #include "blogel/BVertex.h"
 #include "blogel/Block.h"
@@ -322,3 +328,5 @@ void blogel_app_sssp(string in_path, string out_path)
     worker.setCombiner(&combiner);
     worker.run(param);
 }
+
+#endif //BLOGEL_BLOGEL_SIM_H

@@ -8,16 +8,15 @@ class vorPart : public BPartWorker {
     char buf[1000];
 
 public:
-
+    // id nodeType num v1 v2 ... vn
     virtual BPartVertex* toVertex(char* line)
     {
         char* pch;
         BPartVertex* v = new BPartVertex;
-        v->value().content = line; //first set content!!! line will change later due to "strtok"
         pch = strtok(line, " ");
         v->id = atoi(pch);
-        pch = strtok(NULL, " "); //filter x
-        pch = strtok(NULL, "\t"); //filter y
+        pch = strtok(NULL, " ");
+        v->value().nodeType = atoi(pch);
         pch = strtok(NULL, " ");
         int num = atoi(pch);
 
@@ -25,7 +24,6 @@ public:
             pch = strtok(NULL, " ");
             int nb = atoi(pch);
             v->value().neighbors.push_back(nb);
-            strtok(NULL, " "); //edge length
         }
         return v;
     }
@@ -40,21 +38,12 @@ public:
         for (int i = 0; i < vec.size(); i++) {
             map[vec[i].vid] = vec[i];
         }
-        ////////
-        stringstream ss(v->value().content);
-        string token;
-        ss >> token; //vid
-        ss >> token; //x
-        ss >> token; //y
-        ss >> token; //number
+
         int num = v->value().neighbors.size();
         for (int i = 0; i < num; i++) {
-            ss >> token;
-            int vid = atoi(token.c_str());
-            ss >> token;
-            double elen = atof(token.c_str());
+            int vid = v->value().neighbors[i];
             triplet trip = map[vid];
-            sprintf(buf, "%d %f %d %d ", vid, elen, trip.bid, trip.wid);
+            sprintf(buf, "%d %d %d ", vid, trip.bid, trip.wid);
             writer.write(buf);
         }
         writer.write("\n");
