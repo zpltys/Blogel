@@ -7,7 +7,7 @@ LDFLAGS = -lhdfs -Wno-deprecated -O2
 all: run
 
 run: sssp.cpp
-	$(CCOMPILE) sssp.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o run
+	$(CCOMPILE) part.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o run
 
 clean:
 	-rm run
