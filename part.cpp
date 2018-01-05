@@ -6,4 +6,5 @@ int main(int argc, char* argv[])
     blogel_sssp_vorPart("/pullgel/test", "/vor/liveJournal");
     worker_finalize();
     return 0;
+
 }
