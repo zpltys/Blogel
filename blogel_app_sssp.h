@@ -275,6 +275,7 @@ public:
         v->bid = atoi(pch);
         pch = strtok(NULL, "\t");
         v->wid = atoi(pch);
+        cout << "input: id:" << v->id << " sons:";
         vector<SPEdge> &edges = v->value().edges;
         while (pch = strtok(NULL, " ")) {
             SPEdge trip;
@@ -286,7 +287,9 @@ public:
             pch = strtok(NULL, " ");
             trip.worker = atoi(pch);
             edges.push_back(trip);
+            cout << " " << trip.nb << " " << trip.block << " " << trip.worker << "\t";
         }
+        cout << endl;
         ////////
         if (v->id == src) {
             v->value().dist = 0;
