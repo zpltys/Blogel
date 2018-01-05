@@ -14,32 +14,29 @@
 #include <iostream>
 #include <vector>
 #include <float.h>
+#include <set>
+#include <map>
 
 using namespace std;
 
-int src = 1;
-
-struct SPEdge
+struct SimEdge
 {
-    double len;
-    int nb;
+    int nv;
     int block;
     int worker;
 };
 
-ibinstream& operator<<(ibinstream& m, const SPEdge& v)
+ibinstream& operator<<(ibinstream& m, const SimEdge& v)
 {
-    m << v.len;
-    m << v.nb;
+    m << v.nv;
     m << v.block;
     m << v.worker;
     return m;
 }
 
-obinstream& operator>>(obinstream& m, SPEdge& v)
+obinstream& operator>>(obinstream& m, SimEdge& v)
 {
-    m >> v.len;
-    m >> v.nb;
+    m >> v.nv;
     m >> v.block;
     m >> v.worker;
     return m;
@@ -47,15 +44,16 @@ obinstream& operator>>(obinstream& m, SPEdge& v)
 
 //====================================
 
-struct SPValue
+struct SimValue
 {
-    double dist;
-    int from;
-    vector<SPEdge> edges;
+    int color;
+    set<int> sim;
+    map<int, int> postMap;
+    vector<SimEdge> edges;
     int split; //v.edges[0, ..., inSplit] are local to block
 };
 
-ibinstream& operator<<(ibinstream& m, const SPValue& v)
+ibinstream& operator<<(ibinstream& m, const SimValue& v)
 {
     m << v.dist;
     m << v.from;
