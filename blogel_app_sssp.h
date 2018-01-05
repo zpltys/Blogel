@@ -100,6 +100,7 @@ public:
         //cout << "compute " << step_num() << " time, my id is " << _my_rank << endl;
         if (step_num() == 1)
         {
+            cout << "id:" << id << endl;
             if (id == src)
             {
                 value().dist = 0;
@@ -179,6 +180,13 @@ public:
             int split = uVertex.value().split;
             double udist = uVertex.value().dist;
             //in-block processing
+            cout << "iteration id:" << uVertex.id << endl;
+         /*   for (int i = 0; i < edges.size(); i++) {
+                if (i <= split) {
+                   cout << ""
+                }
+            }
+         */
             for (int i = 0; i <= split; i++) {
                 SPEdge &v = edges[i];
                 int logID = v.worker - begin;
@@ -201,6 +209,7 @@ public:
             }
             //out-block msg passing
             for (int i = split + 1; i < edges.size(); i++) {
+                cout << "outer block" << endl;
                 SPEdge &v = edges[i];
                 SPMsg msg;
                 msg.dist = udist + v.len;
