@@ -13,11 +13,36 @@
 
 #include <iostream>
 #include <vector>
-#include <float.h>
+#include <queue>
 #include <set>
 #include <map>
 
 using namespace std;
+
+struct patternNode {
+    int color;
+    set<int> postSet;
+};
+
+map<int, patternNode> pattern;
+
+void init_pattern() {
+    pattern[1] = patternNode();
+    pattern[2] = patternNode();
+    pattern[3] = patternNode();
+    pattern[1].color = 1;
+    pattern[2].color = 2;
+    pattern[3].color = 3;
+
+    pattern[1].postSet = set<int>();
+    pattern[1].postSet.insert(2);
+    pattern[1].postSet.insert(3);
+
+    pattern[2].postSet = set<int>();
+    pattern[2].postSet.insert(3);
+
+    pattern[3].postSet = set<int>();
+}
 
 struct SimEdge
 {
@@ -26,225 +51,174 @@ struct SimEdge
     int worker;
 };
 
-ibinstream& operator<<(ibinstream& m, const SimEdge& v)
-{
-    m << v.nv;
-    m << v.block;
-    m << v.worker;
-    return m;
-}
-
-obinstream& operator>>(obinstream& m, SimEdge& v)
-{
-    m >> v.nv;
-    m >> v.block;
-    m >> v.worker;
-    return m;
-}
-
 //====================================
+// u is pattern id, while v is data graph id
+typedef map<int, int> SimMsg;
 
 struct SimValue
 {
     int color;
     set<int> sim;
     map<int, int> postMap;
-    vector<SimEdge> edges;
+    vector<SimEdge> preEdges;
+    SimMsg messageBuffer;
     int split; //v.edges[0, ..., inSplit] are local to block
 };
 
-ibinstream& operator<<(ibinstream& m, const SimValue& v)
-{
-    m << v.dist;
-    m << v.from;
-    m << v.edges;
-    return m;
-}
 
-obinstream& operator>>(obinstream& m, SPValue& v)
-{
-    m >> v.dist;
-    m >> v.from;
-    m >> v.edges;
-    return m;
-}
-
-//====================================
-
-struct SPMsg
-{
-    double dist;
-    int from;
-};
-
-ibinstream& operator<<(ibinstream& m, const SPMsg& v)
-{
-    m << v.dist;
-    m << v.from;
-
-    return m;
-}
-
-obinstream& operator>>(obinstream& m, SPMsg& v)
-{
-    m >> v.dist;
-    m >> v.from;
-    return m;
-}
-
-//====================================
-
-//set field "active" if v.dist changes
-//set back after block-computing
-class SPVertex : public BVertex<VertexID, SPValue, SPMsg>
+class SimVertex : public BVertex<VertexID, SimValue, SimMsg>
 {
 public:
     virtual void compute(MessageContainer& messages)
     {
         //cout << "compute " << step_num() << " time, my id is " << _my_rank << endl;
-        if (step_num() == 1)
-        {
-            if (id == src)
-            {
-                value().dist = 0;
-                value().from = -1;
-            } //remain active, to be processed by block-computing
-            else
-            {
-                value().dist = DBL_MAX;
-                value().from = -1;
-                vote_to_halt();
-            }
-        }
-        else
-        {
-            SPMsg min;
-            min.dist = DBL_MAX;
-            for (int i = 0; i < messages.size(); i++)
-            {
-                SPMsg msg = messages[i];
-                if (min.dist > msg.dist)
-                {
-                    min = msg;
+        if (step_num() == 1) {
+            for (map<int, patternNode>::iterator it = pattern.begin(); it != pattern.end(); it++) {
+                int u = it->first;
+                patternNode node = it->second;
+                if (node.color == value().color) {
+                    value().messageBuffer[u] += 1;
+                    value().sim.insert(u);
                 }
             }
-            if (min.dist < value().dist)
-            {
-                value().dist = min.dist;
-                value().from = min.from;
-            } //remain active, to be processed by block-computing
-            else
-                vote_to_halt();
+        } else {
+            if (step_num() == 2) {
+                for (int i = 0; i < messages.size(); i++) {
+                    SimMsg& msg = messages[i];
+                    for (SimMsg::iterator it = msg.begin(); it != msg.end(); it++) {
+                        value().postMap[it->first] += it->second;
+                    }
+                }
+            } else {
+                for (int i = 0; i < messages.size(); i++) {
+                    SimMsg& msg = messages[i];
+                    for (SimMsg::iterator it = msg.begin(); it != msg.end(); it++) {
+                        value().postMap[it->first] -= it->second;
+                    }
+                }
+            }
+
+            vector<int> deleted;
+            for (set<int>::iterator it = value().sim.begin(); it != value().sim.end(); it++) {
+                int u = *it;
+                bool match = true;
+                for (set<int>::iterator temp = pattern[u].postSet.begin(); temp != pattern[u].postSet.end(); temp++) {
+                    int v = *temp;
+                    if (value().postMap[v] == 0) {
+                        match = false;
+                        break;
+                    }
+                }
+
+                if (!match) {
+                    deleted.push_back(u);
+                }
+            }
+            value().messageBuffer.clear();
+            for (int i = 0; i < deleted.size(); i++) {
+                value().messageBuffer[deleted[i]] = 1;
+                value().sim.erase(deleted[i]);
+            }
+            if (deleted.empty()) vote_to_halt();
         }
     }
 };
 
 //====================================
 
-class SPBlock : public Block<char, SPVertex, char>
+class SimBlock : public Block<char, SimVertex, char>
 {
 public:
-    typedef qelem<double, int> elemT;
-
     virtual void compute(MessageContainer& messages, VertexContainer& vertexes) //multi-source Dijkstra (assume a super src node)
     { //heap is better than queue, since each vertex is enheaped only once
         //collect active seeds
         //cout << bid <<" " << _my_rank << endl;
-        heap<double, int> hp;
+        queue<SimVertex&> q;
+        map<int, bool> inQueue;
+        for (int i = begin; i < begin + size; i++) {
+            SimVertex& vertex = *vertexes[i];
+            if (!vertex.is_active()) continue;
 
-        int n = size;
-        vector<bool> tag(n, false);
-        vector<elemT*> eles(n);
-        for (int i = 0; i < n; i++)
-            eles[i] = NULL; //init eles[]
-
-        for (int i = begin; i < begin + size; i++)
-        {
-            SPVertex& vertex = *(vertexes[i]);
-            if (vertex.is_active())
-            {
-                double key = vertexes[i]->value().dist; //distance
-                int val = i - begin; //logic ID
-                eles[val] = new elemT(key, val);
-                hp.add(*eles[val]); //1. add active vertex to minheap
-                vertex.vote_to_halt(); //2. deactivate the vertex
-            }
+            q.push(vertex);
+            inQueue[vertex.id] = true;
+            vertex.vote_to_halt();
         }
-        //run dijkstra's alg
-        while (hp.size() > 0) {
-            elemT &u = hp.peek();
-            if (u.key == DBL_MAX)
-                break;
-            hp.remove();
-            tag[u.val] = true;
-            int index = begin + u.val;
-            SPVertex &uVertex = *(vertexes[index]);
-            vector<SPEdge> &edges = uVertex.value().edges;
-            int split = uVertex.value().split;
-            double udist = uVertex.value().dist;
-            //in-block processing
-            for (int i = 0; i <= split; i++) {
-                SPEdge &v = edges[i];
-                int logID = v.worker - begin;
-                if (tag[logID] == false) {
-                    double alt = udist + v.len;
-                    SPVertex &vVertex = *(vertexes[v.worker]);
-                    double &vdist = vVertex.value().dist;
-                    if (alt < vdist) {
-                        if (eles[logID] == NULL) {
-                            eles[logID] = new elemT(alt, logID);
-                            hp.add(*eles[logID]);
-                        } else {
-                            eles[logID]->key = alt;
-                            hp.fix(*eles[logID]);
-                        }
-                        vdist = alt;
-                        vVertex.value().from = uVertex.id;
+
+        while (!q.empty()) {
+            SimVertex& vertex = q.front();
+            q.pop(); inQueue[vertex.id] = false;
+
+            vector<int> deleted;
+            for (set<int>::iterator it = vertex.value().sim.begin(); it != vertex.value().sim.end(); it++) {
+                int u = *it;
+                bool match = true;
+                for (set<int>::iterator temp = pattern[u].postSet.begin(); temp != pattern[u].postSet.end(); temp++) {
+                    int v = *temp;
+                    if (vertex.value().postMap[v] == 0) {
+                        match = false;
+                        break;
                     }
                 }
+
+                if (!match) {
+                    deleted.push_back(u);
+                }
             }
-            //out-block msg passing
-            for (int i = split + 1; i < edges.size(); i++) {
-                SPEdge &v = edges[i];
-                SPMsg msg;
-                msg.dist = udist + v.len;
-                msg.from = uVertex.id;
-                uVertex.send_message(v.nb, v.worker, msg);
+            for (int i = 0; i < deleted.size(); i++) {
+                vertex.value().messageBuffer[deleted[i]] = 1;
+                vertex.value().sim.erase(deleted[i]);
             }
+            if (vertex.value().messageBuffer.empty()) continue;
+
+            SimValue& value = vertex.value();
+            for (int i = 0; i <= value.split; i++) {
+                int nvId = value.preEdges[i].worker;
+                SimVertex& uVertex = *vertexes[nvId];
+
+                for (map<int, int>::iterator it = value.messageBuffer.begin(); it != value.messageBuffer.end(); it++) {
+                    uVertex.value().postMap[it->first]--;
+                }
+                if (!inQueue[uVertex.id]) {
+                    inQueue[uVertex.id] = true;
+                    q.push(uVertex);
+                }
+            }
+
+            for (int i = value.split + 1; i < value.preEdges.size(); i++) {
+                SimEdge& e = value.preEdges[i];
+                vertex.send_message(e.nv, e.worker, value.messageBuffer);
+            }
+
+            value.messageBuffer.clear();
         }
-        //free elemT objects
-        for (int i = 0; i < n; i++)
-        {
-            if (eles[i] != NULL)
-                delete eles[i];
-        }
+        inQueue.clear();
         vote_to_halt();
     }
 };
 
 //====================================
 
-class SPBlockWorker : public BWorker<SPBlock> {
+class SPBlockWorker : public BWorker<SimBlock> {
     char buf[1000];
 
 public:
     virtual void blockInit(VertexContainer &vertexes, BlockContainer &blocks) {
-        hash_map<int, int> map;
+        hash_map<int, int> mp;
         for (int i = 0; i < vertexes.size(); i++)
-            map[vertexes[i]->id] = i;
+            mp[vertexes[i]->id] = i;
         //////
         if (_my_rank == MASTER_RANK)
             cout << "Splitting in/out-block edges ..." << endl;
         for (BlockIter it = blocks.begin(); it != blocks.end(); it++) {
-            SPBlock *block = *it;
+            SimBlock *block = *it;
             for (int i = block->begin; i < block->begin + block->size; i++) {
-                SPVertex *vertex = vertexes[i];
-                vector<SPEdge> &edges = vertex->value().edges;
-                vector<SPEdge> tmp;
-                vector<SPEdge> tmp1;
+                SimVertex *vertex = vertexes[i];
+                vector<SimEdge> &edges = vertex->value().preEdges;
+                vector<SimEdge> tmp;
+                vector<SimEdge> tmp1;
                 for (int j = 0; j < edges.size(); j++) {
                     if (edges[j].block == block->bid) {
-                        edges[j].worker = map[edges[j].nb]; //workerID->array index
+                        edges[j].worker = mp[edges[j].nv]; //workerID->array index
                         tmp.push_back(edges[j]);
                     } else
                         tmp1.push_back(edges[j]);
@@ -261,21 +235,24 @@ public:
 
     //input line format: vid blockID workerID \t nb1 nb2 ...
     //nbi format: vid edgeLength blockID workerID
-    virtual SPVertex *toVertex(char *line) {
+    virtual SimVertex *toVertex(char *line) {
         char *pch;
         pch = strtok(line, " ");
-        SPVertex *v = new SPVertex;
+        SimVertex *v = new SimVertex;
         v->id = atoi(pch);
         pch = strtok(NULL, " ");
+        v->value().color = atoi(pch);
+        pch = strtok(NULL, " ");
         v->bid = atoi(pch);
-        pch = strtok(NULL, "\t");
+        pch = strtok(NULL, " ");
         v->wid = atoi(pch);
-        vector<SPEdge> &edges = v->value().edges;
-        while (pch = strtok(NULL, " ")) {
-            SPEdge trip;
-            trip.nb = atoi(pch);
+        vector<SimEdge> &edges = v->value().preEdges;
+        pch = strtok(NULL, " ");
+        int num = atoi(pch);
+        while (num--) {
+            SimEdge trip;
             pch = strtok(NULL, " ");
-            trip.len = atof(pch);
+            trip.nv = atoi(pch);
             pch = strtok(NULL, " ");
             trip.block = atoi(pch);
             pch = strtok(NULL, " ");
@@ -283,38 +260,35 @@ public:
             edges.push_back(trip);
         }
         ////////
-        if (v->id == src) {
-            v->value().dist = 0;
-            v->value().from = -1;
-        } else {
-            v->value().dist = DBL_MAX;
-            v->value().from = -1;
-            v->vote_to_halt();
-        }
+        if (edges.empty()) v->vote_to_halt();
         return v;
     }
 
-    virtual void toline(SPBlock *b, SPVertex *v, BufferedWriter &writer) {
-        if (v->value().dist != DBL_MAX) {
-            sprintf(buf, "%d\t%f %d", v->id, v->value().dist, v->value().from);
+    virtual void toline(SimBlock *b, SimVertex *v, BufferedWriter &writer) {
+        if (!v->value().sim.empty()) {
+            sprintf(buf, "%d\t", v->id);
+            for (set<int>::iterator it = v->value().sim.begin(); it != v->value().sim.end(); it++) {
+                sprintf(buf, "%d ", *it);
+            }
+            sprintf(buf, "\n");
             writer.write(buf);
         }
-        writer.write("\n");
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 };
 
-class SPCombiner : public Combiner<SPMsg>
+class SPCombiner : public Combiner<SimMsg>
 {
 public:
-    virtual void combine(SPMsg& old, const SPMsg& new_msg)
+    virtual void combine(SimMsg& old, const SimMsg& new_msg)
     {
-        if (old.dist > new_msg.dist)
-            old = new_msg;
+        for (map<int, int>::const_iterator it = new_msg.begin(); it != new_msg.end(); it++) {
+            old[it->first] += it->second;
+        }
     }
 };
 
-void blogel_app_sssp(string in_path, string out_path)
+void blogel_app_sim(string in_path, string out_path)
 {
     WorkerParams param;
     param.input_path = in_path;
@@ -322,6 +296,7 @@ void blogel_app_sssp(string in_path, string out_path)
     param.force_write = true;
     SPBlockWorker worker;
     worker.set_compute_mode(SPBlockWorker::VB_COMP);
+    init_pattern();
     SPCombiner combiner;
     worker.setCombiner(&combiner);
     worker.run(param);

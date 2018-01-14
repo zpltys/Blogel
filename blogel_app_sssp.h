@@ -181,12 +181,6 @@ public:
             double udist = uVertex.value().dist;
             //in-block processing
             cout << "iteration id:" << uVertex.id << endl;
-         /*   for (int i = 0; i < edges.size(); i++) {
-                if (i <= split) {
-                   cout << ""
-                }
-            }
-         */
             for (int i = 0; i <= split; i++) {
                 SPEdge &v = edges[i];
                 int logID = v.worker - begin;
