@@ -133,19 +133,19 @@ public:
     { //heap is better than queue, since each vertex is enheaped only once
         //collect active seeds
         //cout << bid <<" " << _my_rank << endl;
-        queue<SimVertex&> q;
+        queue<SimVertex*> q;
         map<int, bool> inQueue;
         for (int i = begin; i < begin + size; i++) {
-            SimVertex& vertex = *vertexes[i];
+            SimVertex vertex = *vertexes[i];
             if (!vertex.is_active()) continue;
 
-            q.push(vertex);
+            q.push(&vertex);
             inQueue[vertex.id] = true;
             vertex.vote_to_halt();
         }
 
         while (!q.empty()) {
-            SimVertex& vertex = q.front();
+            SimVertex vertex = *q.front();
             q.pop(); inQueue[vertex.id] = false;
 
             vector<int> deleted;
@@ -173,14 +173,14 @@ public:
             SimValue& value = vertex.value();
             for (int i = 0; i <= value.split; i++) {
                 int nvId = value.preEdges[i].worker;
-                SimVertex& uVertex = *vertexes[nvId];
+                SimVertex uVertex = *vertexes[nvId];
 
                 for (map<int, int>::iterator it = value.messageBuffer.begin(); it != value.messageBuffer.end(); it++) {
                     uVertex.value().postMap[it->first]--;
                 }
                 if (!inQueue[uVertex.id]) {
                     inQueue[uVertex.id] = true;
-                    q.push(uVertex);
+                    q.push(&uVertex);
                 }
             }
 
