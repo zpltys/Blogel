@@ -132,7 +132,7 @@ public:
     virtual void compute(MessageContainer& messages, VertexContainer& vertexes) //multi-source Dijkstra (assume a super src node)
     { //heap is better than queue, since each vertex is enheaped only once
         //collect active seeds
-        //cout << bid <<" " << _my_rank << endl;
+        cout << bid <<" " << _my_rank << endl;
         cout << "start block compute" << endl;
 
         queue<SimVertex*> q;
@@ -146,9 +146,13 @@ public:
             vertex.vote_to_halt();
         }
 
+        cout << "block compute queue initial" << endl;
+
         while (!q.empty()) {
             SimVertex vertex = *q.front();
             q.pop(); inQueue[vertex.id] = false;
+
+            cout << "loop: id:" << vertex.id << endl;
 
             vector<int> deleted;
             for (set<int>::iterator it = vertex.value().sim.begin(); it != vertex.value().sim.end(); it++) {
@@ -234,7 +238,7 @@ public:
         }
         if (_my_rank == MASTER_RANK) {
             cout << "In/out-block edges split" << endl;
-        } else cout << "haha" << endl;
+        }
     }
 
     //input line format: vid blockID workerID \t nb1 nb2 ...
