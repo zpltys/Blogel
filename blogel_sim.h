@@ -133,6 +133,8 @@ public:
     { //heap is better than queue, since each vertex is enheaped only once
         //collect active seeds
         //cout << bid <<" " << _my_rank << endl;
+        cout << "start block compute" << endl;
+
         queue<SimVertex*> q;
         map<int, bool> inQueue;
         for (int i = begin; i < begin + size; i++) {
@@ -193,6 +195,8 @@ public:
         }
         inQueue.clear();
         vote_to_halt();
+
+        cout << "end block compute" << endl;
     }
 };
 
@@ -230,7 +234,7 @@ public:
         }
         if (_my_rank == MASTER_RANK) {
             cout << "In/out-block edges split" << endl;
-        }
+        } else cout << "haha" << endl;
     }
 
     //input line format: vid blockID workerID \t nb1 nb2 ...
@@ -262,7 +266,7 @@ public:
         ////////
         if (edges.empty()) v->vote_to_halt();
 
-        cout << "read ok, id:" << v->id << endl;
+        //cout << "read ok, id:" << v->id << endl;
         return v;
     }
 
