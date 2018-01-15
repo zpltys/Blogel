@@ -276,13 +276,14 @@ public:
     virtual void toline(SimBlock *b, SimVertex *v, BufferedWriter &writer) {
         if (!v->value().sim.empty()) {
             sprintf(buf, "%d\t", v->id);
+            writer.write(buf);
             for (set<int>::iterator it = v->value().sim.begin(); it != v->value().sim.end(); it++) {
                 sprintf(buf, "%d ", *it);
+                writer.write(buf);
             }
             sprintf(buf, "\n");
             writer.write(buf);
-        }
-        writer.write("empty!\n");
+        } else writer.write("empty!\n");
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 };
