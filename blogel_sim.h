@@ -152,6 +152,7 @@ public:
         while (!q.empty()) {
             cout << "start loop" << endl;
             SimVertex vertex = *q.front();
+            if (q.front() == NULL) cout << "null pointer!" << endl;
             q.pop(); inQueue[vertex.id] = false;
 
             cout << "loop: id:" << vertex.id << endl;
