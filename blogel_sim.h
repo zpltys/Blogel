@@ -148,13 +148,10 @@ public:
         }
 
         while (!q.empty()) {
-            cout << "start loop" << endl;
-            cout << "id:" << q.front()->id << endl;
             SimVertex& vertex = *q.front();
-            cout << "???" << endl;
             q.pop(); inQueue[vertex.id] = false;
 
-            cout << "loop: id:" << vertex.id << endl;
+            //cout << "loop: id:" << vertex.id << endl;
 
             vector<int> deleted;
             for (set<int>::iterator it = vertex.value().sim.begin(); it != vertex.value().sim.end(); it++) {
@@ -178,8 +175,6 @@ public:
             }
             if (vertex.value().messageBuffer.empty()) continue;
 
-            cout << "ahh" << endl;
-
             SimValue& value = vertex.value();
             for (int i = 0; i <= value.split; i++) {
                 int nvId = value.preEdges[i].worker;
@@ -194,17 +189,13 @@ public:
                 }
             }
 
-            cout << "fuck" << endl;
             for (int i = value.split + 1; i < value.preEdges.size(); i++) {
                 SimEdge& e = value.preEdges[i];
                 vertex.send_message(e.nv, e.worker, value.messageBuffer);
             }
-
-            cout << "mmmp" << endl;
             value.messageBuffer.clear();
-            cout << "hehe" << endl;
         }
-        cout << "finish loop" << endl;
+       // cout << "finish loop" << endl;
         inQueue.clear();
         vote_to_halt();
 
@@ -290,6 +281,8 @@ public:
             }
             sprintf(buf, "\n");
             writer.write(buf);
+        } else {
+            writer.write("empty!\n");
         }
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
