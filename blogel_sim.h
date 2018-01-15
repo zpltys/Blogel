@@ -86,6 +86,7 @@ public:
                 for (int i = 0; i < messages.size(); i++) {
                     SimMsg& msg = messages[i];
                     for (SimMsg::iterator it = msg.begin(); it != msg.end(); it++) {
+                        cout << "message: id:" << id << "  first:" << it->first << "  second:" << it->second << endl;
                         value().postMap[it->first] += it->second;
                     }
                 }
@@ -283,7 +284,7 @@ public:
             }
             sprintf(buf, "\n");
             writer.write(buf);
-        } else writer.write("empty!\n");
+        }
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 };
