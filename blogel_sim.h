@@ -132,7 +132,7 @@ public:
     virtual void compute(MessageContainer& messages, VertexContainer& vertexes) //multi-source Dijkstra (assume a super src node)
     { //heap is better than queue, since each vertex is enheaped only once
         //collect active seeds
-        cout << bid <<" " << _my_rank << endl;
+        cout << "bid:" << bid <<" " << _my_rank << endl;
         cout << "start block compute" << endl;
 
         queue<SimVertex*> q;
@@ -192,6 +192,7 @@ public:
                 }
             }
 
+            cout << "fuck" << endl;
             for (int i = value.split + 1; i < value.preEdges.size(); i++) {
                 SimEdge& e = value.preEdges[i];
                 vertex.send_message(e.nv, e.worker, value.messageBuffer);
