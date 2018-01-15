@@ -143,6 +143,7 @@ public:
 
             q.push(&vertex);
             inQueue[vertex.id] = true;
+            cout << "vertex Id:" << vertex.id << endl;
             vertex.vote_to_halt();
         }
 
