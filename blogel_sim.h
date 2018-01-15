@@ -147,6 +147,12 @@ public:
             vertex.vote_to_halt();
         }
 
+        while (!q.empty()) {
+            cout << "test id:" << q.front()->id << endl;
+            q.pop();
+        }
+
+
         cout << "block compute queue initial" << endl;
 
         while (!q.empty()) {
