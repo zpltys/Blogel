@@ -176,6 +176,8 @@ public:
             }
             if (vertex.value().messageBuffer.empty()) continue;
 
+            cout << "ahh" << endl;
+
             SimValue& value = vertex.value();
             for (int i = 0; i <= value.split; i++) {
                 int nvId = value.preEdges[i].worker;
@@ -197,6 +199,7 @@ public:
 
             value.messageBuffer.clear();
         }
+        cout << "finish loop" << endl;
         inQueue.clear();
         vote_to_halt();
 
