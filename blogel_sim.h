@@ -281,9 +281,8 @@ public:
             }
             sprintf(buf, "\n");
             writer.write(buf);
-        } else {
-            writer.write("empty!\n");
         }
+        writer.write("empty!\n");
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 };
