@@ -138,7 +138,7 @@ public:
         queue<SimVertex*> q;
         map<int, bool> inQueue;
         for (int i = begin; i < begin + size; i++) {
-            SimVertex vertex = *vertexes[i];
+            SimVertex& vertex = *vertexes[i];
             if (!vertex.is_active()) continue;
 
             q.push(&vertex);
