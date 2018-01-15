@@ -3,10 +3,9 @@
 #include <sstream>
 #include "blogel/BGlobal.h"
 using namespace std;
-
+const int  mod = 100;
 class vorPart : public BPartWorker {
     char buf[1000];
-    const int mod = 100;
 
 public:
 
@@ -17,7 +16,6 @@ public:
         v->value().content = line; //first set content!!! line will change later due to "strtok"
         pch = strtok(line, " ");
         v->id = atoi(pch);
-        v->value().nodeType = v->id % mod;
 
         pch = strtok(NULL, " ");
         int num = atoi(pch);
@@ -32,7 +30,7 @@ public:
 
     virtual void toline(BPartVertex* v, BufferedWriter& writer) //key: "vertexID blockID slaveID"
     { //val: list of "vid block slave "
-        sprintf(buf, "%d %d %d %d ", v->id, v->value().nodeType, v->value().color, _my_rank);
+        sprintf(buf, "%d %d %d %d ", v->id, v->id % mod, v->value().color, _my_rank);
         writer.write(buf);
 
         vector<triplet>& vec = v->value().nbsInfo;
