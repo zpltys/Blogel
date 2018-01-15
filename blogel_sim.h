@@ -200,6 +200,7 @@ public:
 
             cout << "mmmp" << endl;
             value.messageBuffer.clear();
+            cout << "hehe" << endl;
         }
         cout << "finish loop" << endl;
         inQueue.clear();
