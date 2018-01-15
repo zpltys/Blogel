@@ -148,17 +148,9 @@ public:
         }
 
         while (!q.empty()) {
-            cout << "test id:" << q.front()->id << endl;
-            q.pop();
-        }
-
-
-        cout << "block compute queue initial" << endl;
-
-        while (!q.empty()) {
             cout << "start loop" << endl;
             cout << "id:" << q.front()->id << endl;
-            SimVertex vertex = *q.front();
+            SimVertex& vertex = *q.front();
             cout << "???" << endl;
             q.pop(); inQueue[vertex.id] = false;
 
@@ -191,7 +183,7 @@ public:
             SimValue& value = vertex.value();
             for (int i = 0; i <= value.split; i++) {
                 int nvId = value.preEdges[i].worker;
-                SimVertex uVertex = *vertexes[nvId];
+                SimVertex& uVertex = *vertexes[nvId];
 
                 for (map<int, int>::iterator it = value.messageBuffer.begin(); it != value.messageBuffer.end(); it++) {
                     uVertex.value().postMap[it->first]--;
