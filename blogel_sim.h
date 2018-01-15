@@ -198,6 +198,7 @@ public:
                 vertex.send_message(e.nv, e.worker, value.messageBuffer);
             }
 
+            cout << "mmmp" << endl;
             value.messageBuffer.clear();
         }
         cout << "finish loop" << endl;
