@@ -86,7 +86,7 @@ public:
                 for (int i = 0; i < messages.size(); i++) {
                     SimMsg& msg = messages[i];
                     for (SimMsg::iterator it = msg.begin(); it != msg.end(); it++) {
-                        cout << "message: id:" << id << "  first:" << it->first << "  second:" << it->second << endl;
+                        cout << "step2: message: id:" << id << "  first:" << it->first << "  second:" << it->second << endl;
                         value().postMap[it->first] += it->second;
                     }
                 }
@@ -147,54 +147,81 @@ public:
             cout << "vertex Id:" << vertex.id << endl;
             vertex.vote_to_halt();
         }
+        if (step_num() >= 2) {
+            while (!q.empty()) {
+                SimVertex &vertex = *q.front();
+                q.pop();
+                inQueue[vertex.id] = false;
 
-        while (!q.empty()) {
-            SimVertex& vertex = *q.front();
-            q.pop(); inQueue[vertex.id] = false;
+                //cout << "loop: id:" << vertex.id << endl;
 
-            //cout << "loop: id:" << vertex.id << endl;
+                vector<int> deleted;
+                for (set<int>::iterator it = vertex.value().sim.begin(); it != vertex.value().sim.end(); it++) {
+                    int u = *it;
+                    bool match = true;
+                    for (set<int>::iterator temp = pattern[u].postSet.begin();
+                         temp != pattern[u].postSet.end(); temp++) {
+                        int v = *temp;
+                        if (vertex.value().postMap[v] == 0) {
+                            match = false;
+                            break;
+                        }
+                    }
 
-            vector<int> deleted;
-            for (set<int>::iterator it = vertex.value().sim.begin(); it != vertex.value().sim.end(); it++) {
-                int u = *it;
-                bool match = true;
-                for (set<int>::iterator temp = pattern[u].postSet.begin(); temp != pattern[u].postSet.end(); temp++) {
-                    int v = *temp;
-                    if (vertex.value().postMap[v] == 0) {
-                        match = false;
-                        break;
+                    if (!match) {
+                        deleted.push_back(u);
+                    }
+                }
+                for (int i = 0; i < deleted.size(); i++) {
+                    vertex.value().messageBuffer[deleted[i]] = 1;
+                    vertex.value().sim.erase(deleted[i]);
+                }
+                if (vertex.value().messageBuffer.empty()) continue;
+
+                SimValue &value = vertex.value();
+                for (int i = 0; i <= value.split; i++) {
+                    int nvId = value.preEdges[i].worker;
+                    SimVertex &uVertex = *vertexes[nvId];
+
+                    for (map<int, int>::iterator it = value.messageBuffer.begin();
+                         it != value.messageBuffer.end(); it++) {
+                        uVertex.value().postMap[it->first]--;
+                    }
+                    if (!inQueue[uVertex.id]) {
+                        inQueue[uVertex.id] = true;
+                        q.push(&uVertex);
                     }
                 }
 
-                if (!match) {
-                    deleted.push_back(u);
+                for (int i = value.split + 1; i < value.preEdges.size(); i++) {
+                    SimEdge &e = value.preEdges[i];
+                    vertex.send_message(e.nv, e.worker, value.messageBuffer);
                 }
+                value.messageBuffer.clear();
             }
-            for (int i = 0; i < deleted.size(); i++) {
-                vertex.value().messageBuffer[deleted[i]] = 1;
-                vertex.value().sim.erase(deleted[i]);
-            }
-            if (vertex.value().messageBuffer.empty()) continue;
+        } else {
+            cout << "block step num:" << step_num() << endl;
+            while (!q.empty()) {
+                SimVertex &vertex = *q.front();
+                q.pop();
+                inQueue[vertex.id] = false;
+                SimValue &value = vertex.value();
 
-            SimValue& value = vertex.value();
-            for (int i = 0; i <= value.split; i++) {
-                int nvId = value.preEdges[i].worker;
-                SimVertex& uVertex = *vertexes[nvId];
+                for (int i = 0; i <= value.split; i++) {
+                    int nvId = value.preEdges[i].worker;
+                    SimVertex &uVertex = *vertexes[nvId];
 
-                for (map<int, int>::iterator it = value.messageBuffer.begin(); it != value.messageBuffer.end(); it++) {
-                    uVertex.value().postMap[it->first]--;
+                    for (map<int, int>::iterator it = value.messageBuffer.begin(); it != value.messageBuffer.end(); it++) {
+                        uVertex.value().postMap[it->first] += it->second;
+                    }
                 }
-                if (!inQueue[uVertex.id]) {
-                    inQueue[uVertex.id] = true;
-                    q.push(&uVertex);
-                }
-            }
 
-            for (int i = value.split + 1; i < value.preEdges.size(); i++) {
-                SimEdge& e = value.preEdges[i];
-                vertex.send_message(e.nv, e.worker, value.messageBuffer);
+                for (int i = value.split + 1; i < value.preEdges.size(); i++) {
+                    SimEdge &e = value.preEdges[i];
+                    vertex.send_message(e.nv, e.worker, value.messageBuffer);
+                }
+                value.messageBuffer.clear();
             }
-            value.messageBuffer.clear();
         }
        // cout << "finish loop" << endl;
         inQueue.clear();
