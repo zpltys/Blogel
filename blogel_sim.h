@@ -149,6 +149,7 @@ public:
         cout << "block compute queue initial" << endl;
 
         while (!q.empty()) {
+            cout << "start loop" << endl;
             SimVertex vertex = *q.front();
             q.pop(); inQueue[vertex.id] = false;
 
