@@ -71,7 +71,6 @@ class SimVertex : public BVertex<VertexID, SimValue, SimMsg>
 public:
     virtual void compute(MessageContainer& messages)
     {
-        //cout << "compute " << step_num() << " time, my id is " << _my_rank << endl;
         if (step_num() == 1) {
             for (map<int, patternNode>::iterator it = pattern.begin(); it != pattern.end(); it++) {
                 int u = it->first;
@@ -86,7 +85,6 @@ public:
                 for (int i = 0; i < messages.size(); i++) {
                     SimMsg& msg = messages[i];
                     for (SimMsg::iterator it = msg.begin(); it != msg.end(); it++) {
-                        cout << "step2: message: id:" << id << "  first:" << it->first << "  second:" << it->second << endl;
                         value().postMap[it->first] += it->second;
                     }
                 }
@@ -133,8 +131,6 @@ public:
     virtual void compute(MessageContainer& messages, VertexContainer& vertexes) //multi-source Dijkstra (assume a super src node)
     { //heap is better than queue, since each vertex is enheaped only once
         //collect active seeds
-        cout << "bid:" << bid <<" " << _my_rank << endl;
-        cout << "start block compute" << endl;
 
         queue<SimVertex*> q;
         map<int, bool> inQueue;
@@ -144,7 +140,6 @@ public:
 
             q.push(&vertex);
             inQueue[vertex.id] = true;
-            cout << "vertex Id:" << vertex.id << endl;
             vertex.vote_to_halt();
         }
         if (step_num() >= 2) {
@@ -152,8 +147,6 @@ public:
                 SimVertex &vertex = *q.front();
                 q.pop();
                 inQueue[vertex.id] = false;
-
-                //cout << "loop: id:" << vertex.id << endl;
 
                 vector<int> deleted;
                 for (set<int>::iterator it = vertex.value().sim.begin(); it != vertex.value().sim.end(); it++) {
@@ -223,11 +216,8 @@ public:
                 value.messageBuffer.clear();
             }
         }
-       // cout << "finish loop" << endl;
         inQueue.clear();
         vote_to_halt();
-
-        cout << "end block compute" << endl;
     }
 };
 
