@@ -6,6 +6,7 @@ using namespace std;
 
 class vorPart : public BPartWorker {
     char buf[1000];
+    const int mod = 100;
 
 public:
 
@@ -16,8 +17,8 @@ public:
         v->value().content = line; //first set content!!! line will change later due to "strtok"
         pch = strtok(line, " ");
         v->id = atoi(pch);
-        pch = strtok(NULL, " "); //filter x
-        pch = strtok(NULL, " "); //filter y
+        v->value().nodeType = v->id % mod;
+
         pch = strtok(NULL, " ");
         int num = atoi(pch);
 
@@ -25,14 +26,13 @@ public:
             pch = strtok(NULL, " ");
             int nb = atoi(pch);
             v->value().neighbors.push_back(nb);
-            strtok(NULL, " "); //edge length
         }
         return v;
     }
 
     virtual void toline(BPartVertex* v, BufferedWriter& writer) //key: "vertexID blockID slaveID"
     { //val: list of "vid block slave "
-        sprintf(buf, "%d %d %d\t", v->id, v->value().color, _my_rank);
+        sprintf(buf, "%d %d %d %d ", v->id, v->value().nodeType, v->value().color, _my_rank);
         writer.write(buf);
 
         vector<triplet>& vec = v->value().nbsInfo;
@@ -44,17 +44,13 @@ public:
         stringstream ss(v->value().content);
         string token;
         ss >> token; //vid
-        ss >> token; //x
-        ss >> token; //y
         ss >> token; //number
         int num = v->value().neighbors.size();
         for (int i = 0; i < num; i++) {
             ss >> token;
             int vid = atoi(token.c_str());
-            ss >> token;
-            double elen = atof(token.c_str());
             triplet trip = map[vid];
-            sprintf(buf, "%d %f %d %d ", vid, elen, trip.bid, trip.wid);
+            sprintf(buf, "%d %d %d ", vid, trip.bid, trip.wid);
             writer.write(buf);
         }
         writer.write("\n");

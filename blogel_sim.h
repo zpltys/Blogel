@@ -193,7 +193,6 @@ public:
                 value.messageBuffer.clear();
             }
         } else {
-            cout << "block step num:" << step_num() << endl;
             while (!q.empty()) {
                 SimVertex &vertex = *q.front();
                 q.pop();

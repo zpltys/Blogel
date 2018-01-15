@@ -5,7 +5,7 @@
 int main(int argc, char* argv[])
 {
     init_workers();
-    blogel_app_sim("/pullgel/test/", "/exp/sssp");
+    blogel_app_sim("/vor/liveJournal", "/exp/sim");
     worker_finalize();
     return 0;
 }
