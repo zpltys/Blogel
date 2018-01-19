@@ -30,18 +30,50 @@ void init_pattern() {
     pattern[1] = patternNode();
     pattern[2] = patternNode();
     pattern[3] = patternNode();
-    pattern[1].color = 1;
-    pattern[2].color = 2;
-    pattern[3].color = 3;
+    pattern[4] = patternNode();
+    pattern[5] = patternNode();
+    pattern[6] = patternNode();
+    pattern[7] = patternNode();
+    pattern[8] = patternNode();
+    pattern[1].color = 0;
+    pattern[2].color = 1;
+    pattern[3].color = 2;
+    pattern[4].color = 3;
+    pattern[5].color = 4;
+    pattern[6].color = 5;
+    pattern[7].color = 6;
+    pattern[8].color = 7;
 
     pattern[1].postSet = set<int>();
     pattern[1].postSet.insert(2);
     pattern[1].postSet.insert(3);
 
     pattern[2].postSet = set<int>();
-    pattern[2].postSet.insert(3);
+    pattern[2].postSet.insert(4);
+    pattern[2].postSet.insert(8);
 
     pattern[3].postSet = set<int>();
+    pattern[3].postSet.insert(4);
+    pattern[3].postSet.insert(7);
+
+    pattern[4].postSet = set<int>();
+    pattern[4].postSet.insert(1);
+    pattern[4].postSet.insert(8);
+
+    pattern[5].postSet = set<int>();
+    pattern[5].postSet.insert(3);
+    pattern[5].postSet.insert(6);
+    pattern[5].postSet.insert(8);
+
+    pattern[6].postSet = set<int>();
+    pattern[6].postSet.insert(2);
+    pattern[6].postSet.insert(7);
+
+    pattern[7].postSet = set<int>();
+    pattern[7].postSet.insert(4);
+
+    pattern[8].postSet = set<int>();
+    pattern[8].postSet.insert(4);
 }
 
 struct SimEdge
