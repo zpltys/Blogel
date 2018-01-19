@@ -44,6 +44,8 @@ public:
         ss >> token; //vid
         ss >> token; //number
         int num = v->value().neighbors.size();
+        sprintf(buf, "%d ", num);
+        writer.write(buf);
         for (int i = 0; i < num; i++) {
             ss >> token;
             int vid = atoi(token.c_str());
