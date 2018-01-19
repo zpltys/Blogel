@@ -11,6 +11,6 @@ int main(int argc, char* argv[])
     blogel_app_sim("/vor/liveJournal", "/exp/sim");
     worker_finalize();
     long end = time(NULL);
-    cout << "total cost time:" << start - end << "s" << endl;
+    cout << "total cost time:" << end - start << "s" << endl;
     return 0;
 }

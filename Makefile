@@ -6,8 +6,8 @@ LDFLAGS = -lhdfs -Wno-deprecated -O2
 
 all: run
 
-run: sim.cpp
-	$(CCOMPILE) sim.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o run
+run: part.cpp
+	$(CCOMPILE) part.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o run
 
 clean:
 	-rm run
