@@ -5,4 +5,4 @@ make
 scp run zpltys@slave1:~/Blogel/
 scp run zpltys@slave2:~/Blogel/
 scp run zpltys@slave3:~/Blogel/
-mpiexec -n 8 -f /home/zpltys/Blogel/conf /home/zpltys/Blogel/run
+mpiexec -n 12 -f /home/zpltys/Blogel/conf /home/zpltys/Blogel/run
