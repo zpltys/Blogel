@@ -3,7 +3,7 @@
 #include <sstream>
 #include "blogel/BGlobal.h"
 using namespace std;
-const int  mod = 100;
+const int mod = 10;
 class vorPart : public BPartWorker {
     char buf[1000];
 
