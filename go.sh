@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 rm run
 rm *.log
 git pull origin master
