@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 rm run
 rm *.log
-git pull origin master
 make
 scp run zpltys@slave1:~/Blogel/
 scp run zpltys@slave2:~/Blogel/
