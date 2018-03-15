@@ -24,13 +24,15 @@ public:
         return v;
     }
 
+    const int blockSize = 24;
+
     virtual void toline(BPartVertex* v, BufferedWriter& writer) //key: "vertexID blockID slaveID"
     { //val: list of "vid block slave "
-        sprintf(buf, "%d %d %d\t", v->id, v->value().color, _my_rank);
+        sprintf(buf, "%d %d %d\t", v->id, v->value().color % blockSize, _my_rank);
         writer.write(buf);
         vector<triplet>& vec = v->value().nbsInfo;
         for (int i = 0; i < vec.size(); i++) {
-            sprintf(buf, "%d %d %d ", vec[i].vid, vec[i].bid, vec[i].wid);
+            sprintf(buf, "%d %d %d ", vec[i].vid, vec[i].bid % blockSize, vec[i].wid);
             writer.write(buf);
         }
         writer.write("\n");
@@ -64,8 +66,8 @@ void blogel_pagerank_vorPart(string in_path, string out_path)
     set_maxRate(0.1);
     */
     //webuk
-    set_sampRate(0.000005);
-    set_maxHop(100);
+    set_sampRate(0.001);
+    set_maxHop(30);
     set_maxVCSize(500000);
     set_factor(1.6);
     set_stopRatio(1.0);
