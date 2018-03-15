@@ -6,7 +6,7 @@ int main(int argc, char* argv[])
 
     long start = time(NULL);
     //blogel_app_pagerank1("/vor/liveJournal","/exp/pr1");
-    blogel_app_pagerank2("/vor/pr1", "/exp/pr");
+    blogel_app_pagerank2("/exp/pr1", "/exp/pr");
     long end = time(NULL);
     cout << "total cost time:" << end - start << "s" << endl;
 
