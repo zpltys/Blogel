@@ -64,8 +64,8 @@ void blogel_pagerank_vorPart(string in_path, string out_path)
     set_maxRate(0.1);
     */
     //webuk
-    set_sampRate(0.001);
-    set_maxHop(30);
+    set_sampRate(0.000005);
+    set_maxHop(100);
     set_maxVCSize(500000);
     set_factor(1.6);
     set_stopRatio(1.0);
