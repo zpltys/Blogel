@@ -1,4 +1,4 @@
-#include "blogel_sssp_vorPart.h"
+#include "blogel_sim_vorPart.h"
 
 int main(int argc, char* argv[])
 {
