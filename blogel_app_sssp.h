@@ -180,7 +180,7 @@ public:
             int split = uVertex.value().split;
             double udist = uVertex.value().dist;
             //in-block processing
-            cout << "iteration id:" << uVertex.id << endl;
+            //cout << "iteration id:" << uVertex.id << endl;
             for (int i = 0; i <= split; i++) {
                 SPEdge &v = edges[i];
                 int logID = v.worker - begin;
@@ -203,7 +203,7 @@ public:
             }
             //out-block msg passing
             for (int i = split + 1; i < edges.size(); i++) {
-                cout << "outer block" << endl;
+               // cout << "outer block" << endl;
                 SPEdge &v = edges[i];
                 SPMsg msg;
                 msg.dist = udist + v.len;
