@@ -6,10 +6,8 @@ LDFLAGS = -lhdfs -Wno-deprecated -O2
 
 all: run
 
-//run: pagerank_part.cpp
-	//$(CCOMPILE) pagerank_part.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o run
-run: run.cpp
-	$(CCOMPILE) run.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o run
+run: sssp_part.cpp
+	$(CCOMPILE) sssp_part.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o run
 
 clean:
 	-rm run
