@@ -13,4 +13,4 @@ run: sssp.cpp
 	$(CCOMPILE) sssp.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o run
 
 clean:
-	-rm run
+	-rm run part
