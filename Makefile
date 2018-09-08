@@ -4,9 +4,12 @@ CPPFLAGS= -I$(HADOOP_HOME)/src/c++/libhdfs -I$(JAVA_HOME)/include -I$(JAVA_HOME)
 LIB = -L$(HADOOP_HOME)/c++/$(PLATFORM)/lib
 LDFLAGS = -lhdfs -Wno-deprecated -O2
 
-all: run
+all: run part
 
-run: sssp_part.cpp
+part: sssp_part.cpp
+	$(CCOMPILE) sssp_part.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o part
+
+run: sssp.cpp
 	$(CCOMPILE) sssp.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o run
 
 clean:
