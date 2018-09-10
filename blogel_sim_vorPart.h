@@ -57,7 +57,7 @@ public:
     }
 };
 
-int blogel_sssp_vorPart(string in_path, string out_path)
+int blogel_sim_vorPart(string in_path, string out_path)
 {
     WorkerParams param;
     param.input_path = in_path;
