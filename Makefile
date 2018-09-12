@@ -13,7 +13,7 @@ cc: cc.cpp
 	$(CCOMPILE) cc.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o cc
 
 pr: pagerank.cpp
-$(CCOMPILE) pagerank.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o pr
+    $(CCOMPILE) pagerank.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o pr
 
 clean:
 	-rm cc part pr
