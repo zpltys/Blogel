@@ -1,5 +1,3 @@
 master:1
-slave1:5
-slave2:5
-slave3:5
-slave4:5
+slave3:10
+slave4:10
