@@ -4,16 +4,13 @@ CPPFLAGS= -I$(HADOOP_HOME)/src/c++/libhdfs -L$(JAVA_HOME)/jre/lib/amd64/server -
 LIB = -L/home/zhangshuai/hadoop-1.2.1/c++/Linux-amd64-64/lib
 LDFLAGS = -lhdfs -ljvm -Wno-deprecated -O2
 
-all: cc part pr
+all: part sssp
 
-part: pagerank_part.cpp
-	$(CCOMPILE) pagerank_part.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o part
+part: sssp_part.cpp
+	$(CCOMPILE) sssp_part.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o part
 
-cc: cc.cpp
-	$(CCOMPILE) cc.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o cc
-
-pr: pagerank.cpp
-	$(CCOMPILE) pagerank.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o pr
+sssp: sssp.cpp
+	$(CCOMPILE) sssp.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o sssp
 
 clean:
-	-rm cc part pr
+	-rm part sssp
