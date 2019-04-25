@@ -261,6 +261,7 @@ public:
     //input line format: vid blockID workerID \t nb1 nb2 ...
     //nbi format: vid edgeLength blockID workerID
     virtual SPVertex *toVertex(char *line) {
+        cout << "start read line" << endl;
         char *pch;
         pch = strtok(line, " ");
         SPVertex *v = new SPVertex;
@@ -294,6 +295,7 @@ public:
             v->vote_to_halt();
         }
         return v;
+        cout << "end read line" << endl;
     }
 
     virtual void toline(SPBlock *b, SPVertex *v, BufferedWriter &writer) {
