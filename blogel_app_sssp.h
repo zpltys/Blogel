@@ -263,46 +263,40 @@ public:
     virtual SPVertex *toVertex(char *line) {
         char *pch;
         SPVertex *v = new SPVertex;
-        if (_my_rank == 0) cout << "Worker " << _my_rank << ": " << line << endl;
         //cout << "Worker " << _my_rank << ": " << line << endl;
-        try {
-            pch = strtok(line, " ");
-            v->id = atoi(pch);
-            if (_my_rank == 0) cout << "Worker " << _my_rank << ": " << "start read id: " << v->id << endl;
+        pch = strtok(line, " ");
+        v->id = atoi(pch);
+        //if (_my_rank == 0) cout << "Worker " << _my_rank << ": " << "start read id: " << v->id << endl;
+        pch = strtok(NULL, " ");
+        v->bid = atoi(pch);
+        pch = strtok(NULL, "\t");
+        v->wid = atoi(pch);
+        //cout << "input: id:" << v->id << " sons:";
+        vector <SPEdge> &edges = v->value().edges;
+        while (pch = strtok(NULL, " ")) {
+            SPEdge trip;
+            trip.nb = atoi(pch);
             pch = strtok(NULL, " ");
-            v->bid = atoi(pch);
-            pch = strtok(NULL, "\t");
-            v->wid = atoi(pch);
-            //cout << "input: id:" << v->id << " sons:";
-            vector <SPEdge> &edges = v->value().edges;
-            while (pch = strtok(NULL, " ")) {
-                SPEdge trip;
-                trip.nb = atoi(pch);
-                pch = strtok(NULL, " ");
-                trip.len = atof(pch);
-                pch = strtok(NULL, " ");
-                trip.block = atoi(pch);
-                pch = strtok(NULL, " ");
-                trip.worker = atoi(pch);
-                edges.push_back(trip);
-                //cout << " " << trip.nb << " " << trip.block << " " << trip.worker << "\t";
-            }
-            //cout << endl;
-            ////////
-            if (v->id == src) {
-                v->value().dist = 0;
-                v->value().from = -1;
-            } else {
-                v->value().dist = DBL_MAX;
-                v->value().from = -1;
-                v->vote_to_halt();
-            }
-            if (_my_rank == 0) cout << "Worker " << _my_rank << ": " << "end read id: " << v->id << endl;
-        } catch (char *err) {
-            cout << "line:" << line << endl;
-            cout << "Worker err" << _my_rank << ": " << err << endl;
-            throw 1;
+            trip.len = atof(pch);
+            pch = strtok(NULL, " ");
+            trip.block = atoi(pch);
+            pch = strtok(NULL, " ");
+            trip.worker = atoi(pch);
+            edges.push_back(trip);
+            //cout << " " << trip.nb << " " << trip.block << " " << trip.worker << "\t";
         }
+        //cout << endl;
+        ////////
+        if (v->id == src) {
+            v->value().dist = 0;
+            v->value().from = -1;
+        } else {
+            v->value().dist = DBL_MAX;
+            v->value().from = -1;
+            v->vote_to_halt();
+        }
+        if (_my_rank == 0) cout << "Worker " << _my_rank << ": " << "end read id: " << v->id << endl;
+
         return v;
     }
 
