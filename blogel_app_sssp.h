@@ -295,7 +295,6 @@ public:
             v->value().from = -1;
             v->vote_to_halt();
         }
-        if (_my_rank == 0) cout << "Worker " << _my_rank << ": " << "end read id: " << v->id << endl;
 
         return v;
     }
