@@ -263,12 +263,12 @@ public:
     virtual SPVertex *toVertex(char *line) {
         char *pch;
         SPVertex *v = new SPVertex;
-        //if (_my_rank == 1) cout << "Worker " << _my_rank << ": " << line << endl;
+        if (_my_rank == 0) cout << "Worker " << _my_rank << ": " << line << endl;
         //cout << "Worker " << _my_rank << ": " << line << endl;
         try {
             pch = strtok(line, " ");
             v->id = atoi(pch);
-            //if (_my_rank == 1) cout << "Worker " << _my_rank << ": " << "start read id: " << v->id << endl;
+            if (_my_rank == 0) cout << "Worker " << _my_rank << ": " << "start read id: " << v->id << endl;
             pch = strtok(NULL, " ");
             v->bid = atoi(pch);
             pch = strtok(NULL, "\t");
@@ -297,7 +297,7 @@ public:
                 v->value().from = -1;
                 v->vote_to_halt();
             }
-            //if (_my_rank == 1) cout << "Worker " << _my_rank << ": " << "end read id: " << v->id << endl;
+            if (_my_rank == 0) cout << "Worker " << _my_rank << ": " << "end read id: " << v->id << endl;
         } catch (char *err) {
             cout << "line:" << line << endl;
             cout << "Worker err" << _my_rank << ": " << err << endl;
