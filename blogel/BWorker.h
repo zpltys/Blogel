@@ -281,7 +281,6 @@ public:
             hdfsCloseFile(fs, in);
             hdfsDisconnect(fs);
         } catch (char *err) {
-            cout << "line:" << line << endl;
             cout << "Worker err" << _my_rank << ": " << err << endl;
             throw 1;
         }
