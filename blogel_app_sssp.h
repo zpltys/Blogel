@@ -262,11 +262,11 @@ public:
     //nbi format: vid edgeLength blockID workerID
     virtual SPVertex *toVertex(char *line) {
         char *pch;
+        SPVertex *v = new SPVertex;
         //if (_my_rank == 1) cout << "Worker " << _my_rank << ": " << line << endl;
         cout << "Worker " << _my_rank << ": " << line << endl;
         try {
             pch = strtok(line, " ");
-            SPVertex *v = new SPVertex;
             v->id = atoi(pch);
             //if (_my_rank == 1) cout << "Worker " << _my_rank << ": " << "start read id: " << v->id << endl;
             pch = strtok(NULL, " ");
