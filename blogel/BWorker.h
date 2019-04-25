@@ -267,19 +267,24 @@ public:
     void load_graph(const char* inpath)
     {
         //cout << "Worker " << _my_rank << ": \"" << inpath << "\" start loaded" << endl; //DEBUG !!!!!!!!!!
-        hdfsFS fs = getHdfsFS();
-        hdfsFile in = getRHandle(inpath, fs);
-        LineReader reader(fs, in);
-        while (true)
-        {
-            reader.readLine();
-            if (!reader.eof())
-                load_vertex(toVertex(reader.getLine()));
-            else
-                break;
+        try {
+            hdfsFS fs = getHdfsFS();
+            hdfsFile in = getRHandle(inpath, fs);
+            LineReader reader(fs, in);
+            while (true) {
+                reader.readLine();
+                if (!reader.eof())
+                    load_vertex(toVertex(reader.getLine()));
+                else
+                    break;
+            }
+            hdfsCloseFile(fs, in);
+            hdfsDisconnect(fs);
+        } catch (char *err) {
+            cout << "line:" << line << endl;
+            cout << "Worker err" << _my_rank << ": " << err << endl;
+            throw 1;
         }
-        hdfsCloseFile(fs, in);
-        hdfsDisconnect(fs);
         //cout << "Worker " << _my_rank << ": \"" << inpath << "\" end loaded" << endl; //DEBUG !!!!!!!!!!
     }
     //=======================================================

@@ -300,7 +300,7 @@ public:
             //if (_my_rank == 1) cout << "Worker " << _my_rank << ": " << "end read id: " << v->id << endl;
         } catch (char *err) {
             cout << "line:" << line << endl;
-            cout << "Worker " << _my_rank << ": " << err << endl;
+            cout << "Worker err" << _my_rank << ": " << err << endl;
             throw 1;
         }
         return v;
