@@ -284,7 +284,7 @@ public:
             edges.push_back(trip);
             cout << " " << trip.nb << " " << trip.block << " " << trip.worker << "\t";
         }
-        //cout << endl;
+        cout << endl;
         ////////
         if (v->id == src) {
             v->value().dist = 0;
