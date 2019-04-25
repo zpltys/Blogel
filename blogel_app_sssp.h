@@ -262,6 +262,7 @@ public:
     //nbi format: vid edgeLength blockID workerID
     virtual SPVertex *toVertex(char *line) {
         char *pch;
+        cout << line << endl;
         pch = strtok(line, " ");
         SPVertex *v = new SPVertex;
         v->id = atoi(pch);
