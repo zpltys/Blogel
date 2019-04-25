@@ -261,16 +261,16 @@ public:
     //input line format: vid blockID workerID \t nb1 nb2 ...
     //nbi format: vid edgeLength blockID workerID
     virtual SPVertex *toVertex(char *line) {
-        cout << "start read line" << endl;
         char *pch;
         pch = strtok(line, " ");
         SPVertex *v = new SPVertex;
         v->id = atoi(pch);
+        cout << "start read id: " << v->id << endl;
         pch = strtok(NULL, " ");
         v->bid = atoi(pch);
         pch = strtok(NULL, "\t");
         v->wid = atoi(pch);
-        cout << "input: id:" << v->id << " sons:";
+        //cout << "input: id:" << v->id << " sons:";
         vector<SPEdge> &edges = v->value().edges;
         while (pch = strtok(NULL, " ")) {
             SPEdge trip;
@@ -282,9 +282,9 @@ public:
             pch = strtok(NULL, " ");
             trip.worker = atoi(pch);
             edges.push_back(trip);
-            cout << " " << trip.nb << " " << trip.block << " " << trip.worker << "\t";
+            //cout << " " << trip.nb << " " << trip.block << " " << trip.worker << "\t";
         }
-        cout << endl;
+        //cout << endl;
         ////////
         if (v->id == src) {
             v->value().dist = 0;
@@ -294,8 +294,8 @@ public:
             v->value().from = -1;
             v->vote_to_halt();
         }
+        cout << "end read id: " << v->id << endl;
         return v;
-        cout << "end read line" << endl;
     }
 
     virtual void toline(SPBlock *b, SPVertex *v, BufferedWriter &writer) {
