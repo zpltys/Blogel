@@ -264,7 +264,7 @@ public:
         char *pch;
         SPVertex *v = new SPVertex;
         //if (_my_rank == 1) cout << "Worker " << _my_rank << ": " << line << endl;
-        cout << "Worker " << _my_rank << ": " << line << endl;
+        //cout << "Worker " << _my_rank << ": " << line << endl;
         try {
             pch = strtok(line, " ");
             v->id = atoi(pch);
@@ -299,6 +299,7 @@ public:
             }
             //if (_my_rank == 1) cout << "Worker " << _my_rank << ": " << "end read id: " << v->id << endl;
         } catch (char *err) {
+            cout << "line:" << line << endl;
             cout << "Worker " << _my_rank << ": " << err << endl;
             throw 1;
         }
