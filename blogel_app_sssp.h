@@ -262,11 +262,11 @@ public:
     //nbi format: vid edgeLength blockID workerID
     virtual SPVertex *toVertex(char *line) {
         char *pch;
-        cout << line << endl;
+        //cout << line << endl;
         pch = strtok(line, " ");
         SPVertex *v = new SPVertex;
         v->id = atoi(pch);
-        cout << "start read id: " << v->id << endl;
+        //cout << "start read id: " << v->id << endl;
         pch = strtok(NULL, " ");
         v->bid = atoi(pch);
         pch = strtok(NULL, "\t");
@@ -295,7 +295,7 @@ public:
             v->value().from = -1;
             v->vote_to_halt();
         }
-        cout << "end read id: " << v->id << endl;
+        //cout << "end read id: " << v->id << endl;
         return v;
     }
 

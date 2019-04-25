@@ -266,6 +266,7 @@ public:
 
     void load_graph(const char* inpath)
     {
+        cout << "Worker " << _my_rank << ": \"" << inpath << "\" start loaded" << endl; //DEBUG !!!!!!!!!!
         hdfsFS fs = getHdfsFS();
         hdfsFile in = getRHandle(inpath, fs);
         LineReader reader(fs, in);
@@ -279,7 +280,7 @@ public:
         }
         hdfsCloseFile(fs, in);
         hdfsDisconnect(fs);
-        //cout << "Worker " << _my_rank << ": \"" << inpath << "\" loaded" << endl; //DEBUG !!!!!!!!!!
+        cout << "Worker " << _my_rank << ": \"" << inpath << "\" end loaded" << endl; //DEBUG !!!!!!!!!!
     }
     //=======================================================
 
