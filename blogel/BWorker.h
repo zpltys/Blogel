@@ -504,6 +504,7 @@ public:
                 {
                     cout << "Superstep " << global_step_num << " done. Time elapsed: " << get_timer(4) << " seconds" << endl;
                     cout << "#vmsgs: " << step_vmsg_num << ", #bmsgs: " << step_bmsg_num << endl;
+                    PrintTimer("Total Computational Time", WORKER_TIMER);
                 }
             }
         }
