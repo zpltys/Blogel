@@ -439,6 +439,10 @@ public:
         {
             while (true)
             {
+                if (_my_rank == MASTER_RANK)
+                {
+                    cout << "start Superstep " << global_step_num + 1 << endl;
+                }
                 global_step_num++;
                 ResetTimer(4);
                 //===================
@@ -460,6 +464,10 @@ public:
                     active_bnum() = get_bnum();
                 }
                 //===================
+                if (_my_rank == MASTER_RANK)
+                {
+                    cout << "aggregator" << endl;
+                }
                 AggregatorT* agg = (AggregatorT*)get_aggregator();
                 if (agg != NULL)
                     agg->init();
