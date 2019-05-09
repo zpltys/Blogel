@@ -208,8 +208,7 @@ public:
                     int nvId = value.preEdges[i].worker;
                     SimVertex &uVertex = *vertexes[nvId];
 
-                    for (map<int, int>::iterator it = value.messageBuffer.begin();
-                         it != value.messageBuffer.end(); it++) {
+                    for (map<int, int>::iterator it = value.messageBuffer.begin(); it != value.messageBuffer.end(); it++) {
                         uVertex.value().postMap[it->first]--;
                     }
                     if (!inQueue[uVertex.id]) {
