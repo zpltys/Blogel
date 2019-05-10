@@ -317,7 +317,6 @@ public:
         ////////
         if (edges.empty()) v->vote_to_halt();
 
-        //cout << "read ok, id:" << v->id << endl;
         return v;
     }
 
@@ -333,7 +332,6 @@ public:
             writer.write(buf);
         }
     }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 };
 
 class SPCombiner : public Combiner<SimMsg>
