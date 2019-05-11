@@ -6,11 +6,8 @@ LDFLAGS = -lhdfs -ljvm -Wno-deprecated -O2
 
 all: part sssp
 
-part: sssp_part.cpp
-	$(CCOMPILE) sssp_part.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o part
-
-sssp: sssp.cpp
-	$(CCOMPILE) sssp.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o sssp
+part: sim_part.cpp
+	$(CCOMPILE) sim_part.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o part
 
 clean:
-	-rm part sssp
+	-rm part
