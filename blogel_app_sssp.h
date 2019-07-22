@@ -262,9 +262,11 @@ public:
     //nbi format: vid edgeLength blockID workerID
     virtual SPVertex *toVertex(char *line) {
         char *pch;
-        pch = strtok(line, " ");
         SPVertex *v = new SPVertex;
+        //cout << "Worker " << _my_rank << ": " << line << endl;
+        pch = strtok(line, " ");
         v->id = atoi(pch);
+        //if (_my_rank == 0) cout << "Worker " << _my_rank << ": " << "start read id: " << v->id << endl;
         pch = strtok(NULL, " ");
         pch = strtok(NULL, " ");
         v->bid = atoi(pch);
@@ -286,9 +288,7 @@ public:
             pch = strtok(NULL, " ");
             trip.worker = atoi(pch);
             edges.push_back(trip);
-
             trip.len = 1;
-          //  cout << " " << trip.nb << " " << trip.block << " " << trip.worker << "\t";
         }
         //cout << endl;
         ////////
@@ -300,6 +300,7 @@ public:
             v->value().from = -1;
             v->vote_to_halt();
         }
+
         return v;
     }
 

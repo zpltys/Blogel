@@ -712,6 +712,7 @@ public:
         if (toUG)
             to_undirected();
         cout << "vornoi begin" << endl;
+        long start = time(NULL);
 
         if (_my_rank == MASTER_RANK)
             cout << "-------------------------- Voronoi Partitioning BEGIN --------------------------" << endl;
@@ -786,6 +787,8 @@ public:
         }
 
         unsetCombiner(); //stop Voronoi sampling
+        long end = time(NULL);
+        cout << "total Voronoi cost time:" << end - start << "s" << endl;
 
         //=========================================================
 

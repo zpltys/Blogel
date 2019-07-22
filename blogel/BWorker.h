@@ -264,13 +264,12 @@ public:
             active_vcount++;
     }
 
-    void load_graph(const char* inpath)
-    {
+    void load_graph(const char* inpath) {
+        //cout << "Worker " << _my_rank << ": \"" << inpath << "\" start loaded" << endl; //DEBUG !!!!!!!!!!
         hdfsFS fs = getHdfsFS();
         hdfsFile in = getRHandle(inpath, fs);
         LineReader reader(fs, in);
-        while (true)
-        {
+        while (true) {
             reader.readLine();
             if (!reader.eof())
                 load_vertex(toVertex(reader.getLine()));
@@ -279,7 +278,8 @@ public:
         }
         hdfsCloseFile(fs, in);
         hdfsDisconnect(fs);
-        //cout << "Worker " << _my_rank << ": \"" << inpath << "\" loaded" << endl; //DEBUG !!!!!!!!!!
+
+        //cout << "Worker " << _my_rank << ": \"" << inpath << "\" end loaded" << endl; //DEBUG !!!!!!!!!!
     }
     //=======================================================
 
@@ -439,6 +439,10 @@ public:
         {
             while (true)
             {
+                if (_my_rank == MASTER_RANK)
+                {
+                    cout << "start Superstep " << global_step_num + 1 << endl;
+                }
                 global_step_num++;
                 ResetTimer(4);
                 //===================
