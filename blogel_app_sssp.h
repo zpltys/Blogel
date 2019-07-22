@@ -266,21 +266,28 @@ public:
         SPVertex *v = new SPVertex;
         v->id = atoi(pch);
         pch = strtok(NULL, " ");
+        pch = strtok(NULL, " ");
         v->bid = atoi(pch);
-        pch = strtok(NULL, "\t");
+        pch = strtok(NULL, " ");
         v->wid = atoi(pch);
        // cout << "input: id:" << v->id << " sons:";
         vector<SPEdge> &edges = v->value().edges;
-        while (pch = strtok(NULL, " ")) {
+
+        pch = strtok(NULL, " ");
+        int num = atoi(pch);
+
+        while (num--) {
             SPEdge trip;
-            trip.nb = atoi(pch);
+
             pch = strtok(NULL, " ");
-            trip.len = atof(pch);
+            trip.nb = atoi(pch);
             pch = strtok(NULL, " ");
             trip.block = atoi(pch);
             pch = strtok(NULL, " ");
             trip.worker = atoi(pch);
             edges.push_back(trip);
+
+            trip.len = 1;
           //  cout << " " << trip.nb << " " << trip.block << " " << trip.worker << "\t";
         }
         //cout << endl;

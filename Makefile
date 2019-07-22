@@ -6,8 +6,8 @@ LDFLAGS = -lhdfs -Wno-deprecated -O2
 
 all: cc part pr
 
-part: pagerank_part.cpp
-	$(CCOMPILE) pagerank_part.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o part
+part: sim_part.cpp
+	$(CCOMPILE) sim_part.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o part
 
 cc: cc.cpp
 	$(CCOMPILE) cc.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o cc
@@ -15,5 +15,7 @@ cc: cc.cpp
 pr: pagerank.cpp
 	$(CCOMPILE) pagerank.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o pr
 
+put: put.cpp
+    $(CCOMPILE) put.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o put
 clean:
-	-rm cc part pr
+	-rm cc part pr put
