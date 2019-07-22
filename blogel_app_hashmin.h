@@ -240,7 +240,7 @@ public:
         pch = strtok(NULL, " ");
         int num = atoi(pch);
         while (num--) {
-            pch = strtok(NULL, " ")
+            pch = strtok(NULL, " ");
             triplet cur;
             cur.vid = atoi(pch);
             pch = strtok(NULL, " ");

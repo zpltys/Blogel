@@ -13,10 +13,10 @@ cc: cc.cpp
 	$(CCOMPILE) cc.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o cc
 
 pr: pagerank.cpp
-	$(CCOMPILE) pagerank.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o pr
+    $(CCOMPILE) pagerank.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o pr
 
 put: put.cpp
     $(CCOMPILE) put.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o put
 
 clean:
-	-rm cc part pr put
+    -rm cc part pr put
