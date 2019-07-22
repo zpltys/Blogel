@@ -4,15 +4,12 @@
 #include "blogel/BType.h"
 #include "blogel/BWorker.h"
 #include "blogel/BGlobal.h"
+
 #include <iostream>
-#include <vector>
-#include <algorithm>
-#include <map>
 using namespace std;
 
 struct CCVertexValue {
     vector<triplet> edges;
-    int color;
 };
 ibinstream& operator<<(ibinstream& m, const CCVertexValue& v)
 {
@@ -32,34 +29,7 @@ class CCVertex : public BVertex<VertexID, CCVertexValue, VertexID> {
 public:
     virtual void compute(MessageContainer& messages)
     {
-        if(step_num() == 1) {
-            value().color = id;
-        } else {
-            bool changed = false;
-            VertexID msg;
-            int i;
-            for (i = 0; i < messages.size(); i++) {
-                msg = messages[i];
-                if (value().color >= msg) continue;
-                value().color = msg;
-                changed = true;
-            }
-            if (!changed) vote_to_halt();
-        }
-    }
-
-    bool operator < (const CCVertex& anVertex) const {
-        if (value().color < anVertex.value().color) return true;
-        return false;
-    }
-};
-
-struct sortVertex {
-    CCVertex* v;
-    bool operator < (const sortVertex& anVertex) const {
-        if (v->value().color < anVertex.v->value().color) return true;
-        return false;
-    }
+    } //not used
 };
 
 //====================================
@@ -112,8 +82,9 @@ public:
         }
     }
 
-    virtual void compute(MessageContainer& messages, VertexContainer& vertexes) {
-        /*if (step_num() == 1) {
+    virtual void compute(MessageContainer& messages, VertexContainer& vertexes)
+    {
+        if (step_num() == 1) {
             VertexID min = bid;
             vector<tuple>& nbs = value().edges;
             for (int i = 0; i < nbs.size(); i++) {
@@ -134,47 +105,6 @@ public:
                 broadcast(min);
             }
             vote_to_halt();
-        }
-    }*/
-        void broadcast(VertexID msg, CCVertex v) {
-            vector <triplet> &nbs = v.value().edges;
-            for (int i = 0; i < nbs.size(); i++) {
-                if (nbs[i].bid != v.bid) send_message(nbs[i].vid, nbs[i].wid, msg);
-            }
-        }
-        virtual void compute(MessageContainer &messages, VertexContainer &vertexes) {
-            vector <sortVertex> activeVector;
-            map<VertexID, *CCVertex> m;
-            for (int i = begin; i < begin + size; i++) {
-                m[vertexes[i]->id] = vertexes[i];
-                CCVertex &vertex = *vertexes[i];
-                if (!vertex.is_active()) continue;
-                vertex.vote_to_halt();
-                sortVertex sv;
-                sv.v = vertexes[i];
-                activeVector.push_back(sv);
-            }
-            sort(sortVertex.begin(), sortVertex.end());
-
-            for (int i = 0; i < sortVertex.size(); i++) {
-                CCVertex v = *sortVertex[i].v;
-                queue <CCVertex> q;
-                q.push(v);
-                while (!q.empty()) {
-                    CCVertex u = q.front();
-                    q.pop();
-                    vector <triplet> &nbs = u.value().edges;
-                    for (int i = 0; i < nbs.size(); i++) {
-                        if (nbs[i].bid == u.bid) {
-                            v = *m[nbs[i].vid];
-                            if (v.value().color <= u.value().color) continue;
-                            v.value().color = u.value().color;
-                            q.push(v);
-                        }
-                    }
-                    broadcast(u.value().color, u);
-                }
-            }
         }
     }
 };
@@ -226,9 +156,8 @@ public:
     }
 
     //C version
-    virtual CCVertex* toVertex(char* line)
-    {
-        char* pch;
+    virtual CCVertex* toVertex(char *line) {
+        char *pch;
         CCVertex* v = new CCVertex;
         pch = strtok(line, " ");
         v->id = atoi(pch);
@@ -237,17 +166,19 @@ public:
         v->bid = atoi(pch);
         pch = strtok(NULL, " ");
         v->wid = atoi(pch);
+
         pch = strtok(NULL, " ");
         int num = atoi(pch);
+
         while (num--) {
+            triplet trip;
             pch = strtok(NULL, " ");
-            triplet cur;
-            cur.vid = atoi(pch);
+            trip.vid = atoi(pch);
             pch = strtok(NULL, " ");
-            cur.bid = atoi(pch);
+            trip.bid = atoi(pch);
             pch = strtok(NULL, " ");
-            cur.wid = atoi(pch);
-            v->value().edges.push_back(cur);
+            trip.wid = atoi(pch);
+            v->value().edges.push_back(trip);
         }
         return v;
     }
