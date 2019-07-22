@@ -329,18 +329,23 @@ public:
 
     //input line format: me \t nb1 nb2 ...
     //each item is of format "vertexID blockID workerID"
-    virtual PRVertex* toVertex(char* line)
-    {
-        char* pch;
+    virtual PRVertex* toVertex(char *line) {
+        char *pch;
         PRVertex* v = new PRVertex;
         pch = strtok(line, " ");
         v->id = atoi(pch);
         pch = strtok(NULL, " ");
+        pch = strtok(NULL, " ");
         v->bid = atoi(pch);
-        pch = strtok(NULL, "\t");
+        pch = strtok(NULL, " ");
         v->wid = atoi(pch);
-        while (pch = strtok(NULL, " ")) {
+
+        pch = strtok(NULL, " ");
+        int num = atoi(pch);
+
+        while (num--) {
             triplet trip;
+            pch = strtok(NULL, " ");
             trip.vid = atoi(pch);
             pch = strtok(NULL, " ");
             trip.bid = atoi(pch);
