@@ -17,5 +17,6 @@ pr: pagerank.cpp
 
 put: put.cpp
     $(CCOMPILE) put.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o put
+
 clean:
 	-rm cc part pr put
