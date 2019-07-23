@@ -11,7 +11,7 @@
 
 using namespace std;
 
-int src = 1;
+int src = 0;
 
 struct SPEdge
 {
@@ -292,7 +292,7 @@ public:
         }
         //cout << endl;
         ////////
-        if (v->id == src) {
+        if (v->id % 100 == src) {
             v->value().dist = 0;
             v->value().from = -1;
         } else {
