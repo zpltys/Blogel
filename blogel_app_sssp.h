@@ -11,8 +11,6 @@
 
 using namespace std;
 
-int src = 0;
-
 struct SPEdge
 {
     double len;
@@ -100,8 +98,8 @@ public:
         //cout << "compute " << step_num() << " time, my id is " << _my_rank << endl;
         if (step_num() == 1)
         {
-            cout << "id:" << id << endl;
-            if (id == src)
+            //cout << "id:" << id << endl;
+            if (id % 100 == 0)
             {
                 value().dist = 0;
                 value().from = -1;
@@ -292,7 +290,7 @@ public:
         }
         //cout << endl;
         ////////
-        if (v->id % 100 == src) {
+        if (v->id % 100 == 0) {
             v->value().dist = 0;
             v->value().from = -1;
         } else {
