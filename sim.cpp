@@ -8,9 +8,9 @@ int main(int argc, char* argv[])
 
     long start = time(NULL);
     init_workers();
-    blogel_app_sim("/vor/liveJournal", "/exp/sim");
+    blogel_app_sim("/vor/webbase/", "/exp/sim");
     worker_finalize();
     long end = time(NULL);
-    cout << "total cost time:" << end - start << "s" << endl;
+    cout << "total sim cost time:" << end - start << "s" << endl;
     return 0;
 }

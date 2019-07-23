@@ -1,14 +1,13 @@
 #include "blogel_app_pagerank1.h"
-//#include "blogel_app_pagerank2.h"
+#include <time.h>
 int main(int argc, char* argv[])
 {
     init_workers();
 
     long start = time(NULL);
-    blogel_app_pagerank1("/vor/liveJournal","/exp/pr1");
-    //blogel_app_pagerank2("/exp/pr1", "/exp/pr");
+    blogel_app_pagerank1("/vor/webbase/","/exp/pr1");
     long end = time(NULL);
-    cout << "total cost time:" << end - start << "s" << endl;
+    cout << "total pr cost time:" << end - start << "s" << endl;
 
     worker_finalize();
     return 0;
