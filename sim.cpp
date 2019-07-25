@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
 
     long start = time(NULL);
     init_workers();
-    blogel_app_sim("/vor/twitter/", "/exp/sim");
+    blogel_app_sim("/vor/friend/", "/exp/sim");
     worker_finalize();
     long end = time(NULL);
     cout << "total sim cost time:" << end - start << "s" << endl;

@@ -22,4 +22,4 @@ put: put.cpp
 	$(CCOMPILE) put.cpp $(CPPFLAGS) $(LIB) $(LDFLAGS)  -o put
 
 clean:
-	-rm sssp cc sim
+	-rm sssp cc sim part
