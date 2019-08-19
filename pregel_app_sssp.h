@@ -92,7 +92,7 @@ class SPVertex_pregel:public Vertex<VertexID, SPValue_pregel, SPMsg_pregel>
 		{
 			if(step_num()==1)
 			{
-				if(id==src)
+				if(id % 100==src)
 				{
 					value().dist=0;
 					value().from=-1;
