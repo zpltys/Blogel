@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[]){
 	init_workers();
-	pregel_sssp(0, "/pullgel/webbase/", "/exp/sssp", true);
+	pregel_sssp(0, "/pullgel/twitter/", "/exp/sssp", true);
 	worker_finalize();
 	return 0;
 }
