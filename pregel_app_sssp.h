@@ -140,7 +140,7 @@ class SPWorker_pregel:public Worker<SPVertex_pregel>
 		virtual SPVertex_pregel* toVertex(char* line)
 		{
 			char * pch;
-			pch=strtok(line, "\t");
+			pch=strtok(line, " ");
 			SPVertex_pregel* v=new SPVertex_pregel;
 			int id=atoi(pch);
 			v->id=id;

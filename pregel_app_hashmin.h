@@ -76,7 +76,7 @@ class CCWorker_pregel:public Worker<CCVertex_pregel>
 		virtual CCVertex_pregel* toVertex(char* line)
 		{
 			char * pch;
-			pch=strtok(line, "\t");
+			pch=strtok(line, " ");
 			CCVertex_pregel* v=new CCVertex_pregel;
 			v->id=atoi(pch);
 			pch=strtok(NULL, " ");

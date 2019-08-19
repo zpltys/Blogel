@@ -93,7 +93,7 @@ class PRWorker_pregel:public Worker<PRVertex_pregel, PRAgg_pregel>
 		virtual PRVertex_pregel* toVertex(char* line)
 		{
 			char * pch;
-			pch=strtok(line, "\t");
+			pch=strtok(line, " ");
 			PRVertex_pregel* v=new PRVertex_pregel;
 			v->id=atoi(pch);
 			pch=strtok(NULL, " ");
