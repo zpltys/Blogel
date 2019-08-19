@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[]){
 	init_workers();
-	pregel_hashmin("/pullgel/webbase/", "/exp/cc", true);
+	pregel_hashmin("/pullgel/twitter/", "/exp/cc", true);
 	worker_finalize();
 	return 0;
 }
