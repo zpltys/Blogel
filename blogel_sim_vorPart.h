@@ -26,29 +26,6 @@ public:
             v->value().neighbors.push_back(nb);
         }
         return v;
-
-
-        /*   char* pch;
-		   BPartVertex* v = new BPartVertex;
-		   v->value().content = line; //first set content!!! line will change later due to "strtok"
-		   pch = strtok(line, "\t");
-		   v->id = atoi(pch);
-
-
-		   while (true) {
-			   pch = strtok(NULL, " ");
-			   if (pch == NULL) break;
-			   int nb = atoi(pch);
-			   v->value().neighbors.push_back(nb);
-		   }
-		   if (v->id < 10) {
-			   printf("id: %d,  edges:", v->id);
-			   for(int i = 0; i < v->value().neighbors.size(); i++) {
-				   printf(" %d", v->value().neighbors[i]);
-			   }
-			   printf("\n");
-		   }
-		   return v;*/
     }
 
     virtual void toline(BPartVertex* v, BufferedWriter& writer) //key: "vertexID blockID slaveID"
